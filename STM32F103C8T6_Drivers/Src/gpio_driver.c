@@ -75,23 +75,18 @@ void MCAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *PinConfig){
 		break;
 	case GPIO_MODE_ANALOG:
 	case GPIO_MODE_INPUT_FLO:
+		Temp_PinConfig = ((PinConfig->GPIO_MODE << 2) & 0x0F);
+		break;
 	case GPIO_MODE_INPUT_PU:
+		Temp_PinConfig = 0x08;
+		GPIOx->ODR |= PinConfig->GPIO_PinNumber;
+		break;
 	case GPIO_MODE_INPUT_PD:
+		Temp_PinConfig = 0x08;
+		GPIOx->ODR &= ~(PinConfig->GPIO_PinNumber);
+		break;
 	case GPIO_MODE_AF_INPUT:
-		if((PinConfig->GPIO_MODE) == GPIO_MODE_INPUT_PU){
-			Temp_PinConfig = 0x08;
-			GPIOx->ODR |= PinConfig->GPIO_PinNumber;
-		}
-		else if((PinConfig->GPIO_MODE) == GPIO_MODE_INPUT_PD){
-			Temp_PinConfig = 0x08;
-			GPIOx->ODR &= ~(PinConfig->GPIO_PinNumber);
-		}
-		else if((PinConfig->GPIO_MODE) == GPIO_MODE_AF_INPUT){
-			Temp_PinConfig = ((GPIO_MODE_INPUT_FLO << 2) & 0x0F);
-		}
-		else{
-			Temp_PinConfig = ((PinConfig->GPIO_MODE << 2) & 0x0F);
-		}
+		Temp_PinConfig = ((GPIO_MODE_INPUT_FLO << 2) & 0x0F);
 		break;
 	}
 	(*ConfigReg) |= (Temp_PinConfig << Pin_Pos);
