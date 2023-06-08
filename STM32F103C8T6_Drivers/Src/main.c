@@ -9,6 +9,8 @@
 
 #include "STM32F103x8.h"
 #include "gpio_driver.h"
+#include "lcd.h"
+#include "keypad.h"
 
 void clock_init();
 void gpio_init();
@@ -23,17 +25,17 @@ void my_wait(int x){
 int main(void)
 {
 	clock_init();
-	gpio_init();
-
+	//gpio_init();
+	LCD_INIT();
+	Keypad_init();
+	char temp;
 	while(1){
-		if(MCAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET){
-			MCAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0); // Single press
-			while(MCAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_RESET);
+		temp = Keypad_getkey();
+		if(temp != 'A'){
+			LCD_WRITE_CHAR(temp);
 		}
-		if(MCAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2) == GPIO_PIN_SET){
-			MCAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1); // Multi press
-		}
-		my_wait(150);
+//		my_wait(50);
+
 	}
 }
 
