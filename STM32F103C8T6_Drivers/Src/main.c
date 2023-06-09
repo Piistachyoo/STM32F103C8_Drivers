@@ -9,8 +9,8 @@
 
 #include "STM32F103x8.h"
 #include "gpio_driver.h"
-#include "lcd.h"
-#include "keypad.h"
+#include "lcd_driver.h"
+#include "keypad_driver.h"
 
 void clock_init();
 void gpio_init();
@@ -25,17 +25,22 @@ void my_wait(int x){
 int main(void)
 {
 	clock_init();
-	//gpio_init();
-	LCD_INIT();
-	Keypad_init();
-	char temp;
+	LCD_Init();
+	keypad_init();
+	uint8 temp;
+	LCD_Send_string_Pos((char*)"Learn In Depth", LCD_FIRST_ROW, 2);
+	LCD_Send_string_Pos((char*)"Keypad: ", LCD_SECOND_ROW, 1);
 	while(1){
-		temp = Keypad_getkey();
-		if(temp != 'A'){
-			LCD_WRITE_CHAR(temp);
+		temp = keypad_Get_Pressed_Key();
+		if('F' != temp){
+			if('C' == temp){
+				LCD_Send_string_Pos("          ", LCD_SECOND_ROW, 9);
+				LCD_Set_Cursor(LCD_SECOND_ROW, 9);
+			}
+			else{
+				LCD_Send_Char(temp);
+			}
 		}
-//		my_wait(50);
-
 	}
 }
 

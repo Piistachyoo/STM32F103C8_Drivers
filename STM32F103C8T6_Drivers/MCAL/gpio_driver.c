@@ -48,8 +48,8 @@ static uint8 Get_CRLH_Position(uint16 PinNumber){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_Init
- * @brief 			- Initializes the GPIOx PINy according to the specified paramters in the PinConfig
+ * @Fn			- MCAL_GPIO_Init
+ * @brief 		- Initializes the GPIOx PINy according to the specified paramters in the PinConfig
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @param [in] 	- PinConfig: Pointer to a GPIO_PinConfig_t structure that contains the configuration
  * 				  information for the specified GPIO PIN
@@ -93,8 +93,8 @@ void MCAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *PinConfig){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_DeInit
- * @brief 			- Resets the GPIO PORT
+ * @Fn			- MCAL_GPIO_DeInit
+ * @brief 		- Resets the GPIO PORT
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @retval 		- None
  * Note			- None
@@ -123,8 +123,8 @@ void MCAL_GPIO_DeInit(GPIO_TypeDef *GPIOx){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_ReadPin
- * @brief 			- Reads Specific PIN
+ * @Fn			- MCAL_GPIO_ReadPin
+ * @brief 		- Reads Specific PIN
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @param [in] 	- PinNumber: Set pin number according to @ref GPIO_PINS_define
  * @retval 		- the input pin value (two values based on @ref GPIO_PIN_STATE
@@ -142,8 +142,8 @@ uint8 MCAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16 PinNumber){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_ReadPort
- * @brief 			- Reads Specific PORT
+ * @Fn			- MCAL_GPIO_ReadPort
+ * @brief 		- Reads Specific PORT
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @retval 		- the input port value
  * Note			- None
@@ -154,8 +154,8 @@ uint16 MCAL_GPIO_ReadPort(GPIO_TypeDef *GPIOx){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_WritePin
- * @brief 			- Write on specific pin
+ * @Fn			- MCAL_GPIO_WritePin
+ * @brief 		- Write on specific pin
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @param [in] 	- PinNumber: Set pin number according to @ref GPIO_PINS_define
  * @param [in] 	- Value: Pin value to be written
@@ -181,8 +181,8 @@ void MCAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16 PinNumber, uint8 Value){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_WritePort
- * @brief 			- Write on specific port
+ * @Fn			- MCAL_GPIO_WritePort
+ * @brief 		- Write on specific port
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @param [in] 	- Value: Port value to be written
  * @retval 		- None
@@ -193,8 +193,8 @@ void MCAL_GPIO_WritePort(GPIO_TypeDef *GPIOx, uint16 Value){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_TogglePin
- * @brief 			- Toggle a specific pin
+ * @Fn			- MCAL_GPIO_TogglePin
+ * @brief 		- Toggle a specific pin
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @param [in] 	- PinNumber: Set pin number according to @ref GPIO_PINS_define
  * @retval 		- None
@@ -205,8 +205,8 @@ void MCAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16 PinNumber){
 }
 
 /**=============================================
- * @Fn				- MCAL_GPIO_LockPin
- * @brief 			- The locking mechanism allows the IO configuration to be frozen
+ * @Fn			- MCAL_GPIO_LockPin
+ * @brief 		- The locking mechanism allows the IO configuration to be frozen
  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
  * @param [in] 	- PinNumber: Set pin number according to @ref GPIO_PINS_define
  * @retval 		- Ok if pin config is locked, or ERROR if pin is not locked @ref GPIO_RETURN_LOCK
