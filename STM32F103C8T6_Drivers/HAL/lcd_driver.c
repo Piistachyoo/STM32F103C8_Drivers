@@ -87,8 +87,11 @@ void LCD_Init(){
 #elif LCD_MODE == LCD_4BIT_MODE
 	// Send Function Set
 	MCAL_GPIO_WritePin(LCD_PORT, D4_PIN, (LCD_4BIT_MODE_2_LINE&0x10));
+	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D5_PIN, (LCD_4BIT_MODE_2_LINE&0x20));
+	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (LCD_4BIT_MODE_2_LINE&0x40));
+	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (LCD_4BIT_MODE_2_LINE&0x80));
 	LCD_Send_Enable_Signal();
 	delay(3);

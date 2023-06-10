@@ -48,15 +48,16 @@ static uint8 Get_CRLH_Position(uint16 PinNumber){
 }
 
 /**=============================================
- * @Fn			- MCAL_GPIO_Init
- * @brief 		- Initializes the GPIOx PINy according to the specified paramters in the PinConfig
- * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
- * @param [in] 	- PinConfig: Pointer to a GPIO_PinConfig_t structure that contains the configuration
- * 				  information for the specified GPIO PIN
- * @retval 		- None
- * Note			- STM32F103C8 MCU has GPIO A,B,C,D,E Modules, but LQFP48 package has only
- * 				  GPIO A,B and part of C/D exported as external PINS from the MCU
- */
+  * @Fn				- MCAL_GPIO_Init
+  * @brief 			- Initializes the GPIOx PINy according to the specified paramters in the PinConfig
+  * @param [in] 	- GPIOx: where x can be (A...E depending on device used) to select the GPIO peripheral
+  * @param [in] 	- PinConfig: Pointer to a GPIO_PinConfig_t structure that contains the configuration
+  * 				  information for the specified GPIO PIN
+  * @retval 		- None
+  * Note			- STM32F103C8 MCU has GPIO A,B,C,D,E Modules, but LQFP48 package has only
+  * 				  GPIO A,B and part of C/D exported as external PINS from the MCU
+  * 				- It is mandatory to enable RCC clock for the corresponding GPIO PORT
+  */
 void MCAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_PinConfig_t *PinConfig){
 	// Port configuration register low (GPIOx_CRL) for pins 0 -> 7
 	// Port configuration register high (GPIOx_CRH) for pins 8 -> 15

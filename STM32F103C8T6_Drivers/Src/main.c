@@ -7,16 +7,16 @@
 /* GitHub        : https://github.com/Piistachyoo             		     */
 /*************************************************************************/
 
-#include "STM32F103x8.h"
 #include "gpio_driver.h"
+#include "EXTI_driver.h"
 #include "lcd_driver.h"
-#include "keypad_driver.h"
+
+uint8 IRQ_Flag;
 
 void clock_init();
-void gpio_init();
-
+void MyISR_EXTIB9(void);
 void my_wait(int x){
-	uint8 i, j;
+	uint16 i, j;
 	for(i = 0; i < x; i++){
 		for(j = 0; j < 255; j++);
 	}
@@ -26,49 +26,32 @@ int main(void)
 {
 	clock_init();
 	LCD_Init();
-	keypad_init();
-	uint8 temp;
-	LCD_Send_string_Pos((char*)"Learn In Depth", LCD_FIRST_ROW, 2);
-	LCD_Send_string_Pos((char*)"Keypad: ", LCD_SECOND_ROW, 1);
+	EXTI_PinConfig_t myEXTI;
+	myEXTI.EXTI_PIN = EXTI9PB9;
+	myEXTI.Trigger_Case = EXTI_TRIGGER_FALLING;
+	myEXTI.IRQ_EN = EXTI_IRQ_ENABLE;
+	myEXTI.P_IRQ_CallBack = MyISR_EXTIB9;
+	MCAL_EXTI_GPIO_Init(&myEXTI);
+	LCD_Send_string_Pos((uint8*)"Waiting EXTI!", LCD_FIRST_ROW, 1);
 	while(1){
-		temp = keypad_Get_Pressed_Key();
-		if('F' != temp){
-			if('C' == temp){
-				LCD_Send_string_Pos("          ", LCD_SECOND_ROW, 9);
-				LCD_Set_Cursor(LCD_SECOND_ROW, 9);
-			}
-			else{
-				LCD_Send_Char(temp);
-			}
+		if(IRQ_Flag){
+			LCD_Send_string_Pos((uint8*)"                ", LCD_SECOND_ROW, 1);
+			IRQ_Flag--;
 		}
+
+//		my_wait(350);
 	}
 }
 
 void clock_init(){
 	RCC_GPIOA_CLK_EN();
 	RCC_GPIOB_CLK_EN();
+	RCC_AFIO_CLK_EN();
 }
 
-void gpio_init(){
-
-	GPIO_PinConfig_t PINA1 = {.GPIO_PinNumber = GPIO_PIN_1,
-							  .GPIO_MODE = GPIO_MODE_INPUT_PU};
-
-	GPIO_PinConfig_t PINA2 = {.GPIO_PinNumber = GPIO_PIN_2,
-							   .GPIO_MODE = GPIO_MODE_INPUT_PD};
-
-	GPIO_PinConfig_t PINB0 = {.GPIO_PinNumber = GPIO_PIN_0,
-							  .GPIO_MODE = GPIO_MODE_OUTPUT_PP,
-							  .GPIO_OUTPUT_SPEED = GPIO_SPEED_2M };
-
-	GPIO_PinConfig_t PINB1 = {.GPIO_PinNumber = GPIO_PIN_1,
-							   .GPIO_MODE = GPIO_MODE_OUTPUT_PP,
-							   .GPIO_OUTPUT_SPEED = GPIO_SPEED_2M };
-
-
-	MCAL_GPIO_Init(GPIOA, &PINA1);
-	MCAL_GPIO_Init(GPIOA, &PINA2);
-	MCAL_GPIO_Init(GPIOB, &PINB0);
-	MCAL_GPIO_Init(GPIOB, &PINB1);
+void MyISR_EXTIB9(void){
+	LCD_Send_string_Pos((uint8*)"EXTI PB9 Occured", LCD_SECOND_ROW, 1);
+	IRQ_Flag++;
+	my_wait(2000);
 
 }
