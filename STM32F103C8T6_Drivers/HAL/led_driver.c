@@ -13,8 +13,8 @@
   * @Fn				- LED_Init
   * @brief 			- This function shall initialize the LED by setting the GPIO pin to the configuration provided in led_cfg
   * @param [in] 	- led_cfg: Pointer to the struct holding the LED configuration
-  * @param [out] 	-
-  * @retval 		-
+  * @param [out] 	- None
+  * @retval 		- None
   * Note			- LED is initially off
   */
 void LED_Init(const LED_cfg_t *led_cfg){
@@ -59,9 +59,9 @@ void LED_TurnOn(const LED_cfg_t *led_cfg){
   * @Fn				- LED_TurnOff
   * @brief 			- This function shall turn off the LED
   * @param [in] 	- led_cfg: Pointer to the struct holding the LED configuration
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 void LED_TurnOff(const LED_cfg_t *led_cfg){
 	/* Validate that led_cfg is not a NULL pointer */
@@ -81,9 +81,9 @@ void LED_TurnOff(const LED_cfg_t *led_cfg){
   * @Fn				- LED_Toggle
   * @brief 			- This function shall toggle the status of the LED
   * @param [in] 	- led_cfg: Pointer to the struct holding the LED configuration
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 void LED_Toggle(const LED_cfg_t *led_cfg){
 	/* Validate that led_cfg is not a NULL pointer */
