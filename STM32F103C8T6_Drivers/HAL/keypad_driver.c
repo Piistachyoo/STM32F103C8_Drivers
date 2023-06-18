@@ -11,10 +11,10 @@
 
 /* Keypad buttons definition */
 static uint8 Keypad_Buttons [KEYPAD_ROWS][KEYPAD_COLS] = {
-		{'7', '8', '9', '/'},
-		{'4', '5', '6', 'x'},
-		{'1', '2', '3', '-'},
-		{'C', '0', '=', '+'}
+		{ 7 ,  8 ,  9 , '/'},
+		{ 4 ,  5 ,  6 , 'x'},
+		{ 1 ,  2 ,  3 , '-'},
+		{'C',  0 , '=', '+'}
 };
 
 static uint16 Keypad_ROWS_GPIO [KEYPAD_ROWS] = {ROW0, ROW1, ROW2, ROW3};

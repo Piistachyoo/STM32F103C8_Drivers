@@ -56,7 +56,6 @@
 
 
 // @ref LCD_CONFIG_define
-
 #define LCD_PORT			GPIOA
 #define RS_PIN				GPIO_PIN_8  // @ref GPIO_PINS_define
 #define RW_PIN				GPIO_PIN_9  // @ref GPIO_PINS_define

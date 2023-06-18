@@ -85,29 +85,30 @@ void LCD_Init(){
 	LCD_Send_Command(ENTRY_MODE);
 
 #elif LCD_MODE == LCD_4BIT_MODE
+	MCAL_GPIO_WritePin(LCD_PORT, RS_PIN, GPIO_PIN_RESET);
+	MCAL_GPIO_WritePin(LCD_PORT, RW_PIN, GPIO_PIN_RESET);
+	delay(1);
 	// Send Function Set
 	MCAL_GPIO_WritePin(LCD_PORT, D4_PIN, (LCD_4BIT_MODE_2_LINE&0x10));
-	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D5_PIN, (LCD_4BIT_MODE_2_LINE&0x20));
-	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (LCD_4BIT_MODE_2_LINE&0x40));
-	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (LCD_4BIT_MODE_2_LINE&0x80));
 	LCD_Send_Enable_Signal();
-	delay(3);
+//	delay(3);
 	LCD_Send_Command(LCD_4BIT_MODE_2_LINE);
-	delay(3);
+	delay(2);
 
 	// Set Display Settings
 	LCD_Send_Command(DISPLAY_MODE);
-	delay(3);
+	delay(2);
 
 	// Send clear display command
 	LCD_Send_Command(LCD_CLEAR_DISPLAY);
-	delay(3);
+	delay(4);
 
 	// Set Entry Mode Settings
 	LCD_Send_Command(ENTRY_MODE);
+	delay(2);
 #endif
 }
 
@@ -242,6 +243,7 @@ void LCD_Send_Enable_Signal(){
 	MCAL_GPIO_WritePin(LCD_PORT, EN_PIN, GPIO_PIN_SET);
 	delay(2);
 	MCAL_GPIO_WritePin(LCD_PORT, EN_PIN, GPIO_PIN_RESET);
+	delay(2);
 }
 
 /**=============================================
