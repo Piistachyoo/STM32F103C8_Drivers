@@ -38,8 +38,8 @@ typedef struct{
 //----------------------------------------------
 
 // @ref SS_Dot_Status_define
-#define SS_DOT_ON	1
-#define SS_DOT_OFF	0
+#define SS_DOT_ON	0x80U
+#define SS_DOT_OFF	0x00U
 
 // @ref SS_Numbers_define
 /* hexadecimal representation for common cathode seven segment */

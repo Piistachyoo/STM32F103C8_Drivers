@@ -53,6 +53,7 @@ void SS_Init(const SS_cfg_t *mySS){
   */
 void SS_Display_Number(const SS_cfg_t *mySS, uint8 number, uint8 dot_status){
 	uint8 index, SS_ON_mode, SS_OFF_mode;
+	number |= dot_status; // Turn dot on or off depending on sent configuration
 	/* Validate that led_cfg is not a NULL pointer */
 	if(NULL != mySS){
 		/* Check seven segment type */
@@ -71,20 +72,13 @@ void SS_Display_Number(const SS_cfg_t *mySS, uint8 number, uint8 dot_status){
 		}
 
 		/* Loop on number code */
-		for(index = 0; index < 7; index++){
+		for(index = 0; index < 8; index++){
 			if((number>>index)&0x01){
 				MCAL_GPIO_WritePin(mySS->PINS[index].PORT, mySS->PINS[index].PIN.GPIO_PinNumber, SS_ON_mode);
 			}
 			else{
 				MCAL_GPIO_WritePin(mySS->PINS[index].PORT, mySS->PINS[index].PIN.GPIO_PinNumber, SS_OFF_mode);
 			}
-		}
-		/* Check for dot status */
-		if(SS_DOT_ON == dot_status){
-			MCAL_GPIO_WritePin(mySS->PINS[7].PORT, mySS->PINS[7].PIN.GPIO_PinNumber, SS_ON_mode);
-		}
-		else{
-			MCAL_GPIO_WritePin(mySS->PINS[7].PORT, mySS->PINS[7].PIN.GPIO_PinNumber, SS_OFF_mode);
 		}
 	}
 	else{ /* Do Nothing */ }
