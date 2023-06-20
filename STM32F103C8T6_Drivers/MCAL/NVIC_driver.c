@@ -74,3 +74,112 @@ void MCAL_NVIC_DisableIRQ(uint8 IRQn){
 
 	NVIC->ICER[reg_index] = (1U<<IRQ_index);
 }
+
+/**=============================================
+  * @Fn				- MCAL_NVIC_GetPendingIRQ
+  * @brief 			- Return true (IRQ-Number) if IRQn is pending
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
+  */
+uint8 MCAL_NVIC_GetPendingIRQ(uint8 IRQn){
+    uint8 ret_val;
+    /* Check which ICPR register to write into */
+	uint8 reg_index = IRQn/32;
+
+	/* Get IRQn with respect to current register */
+	uint8 IRQ_index = IRQn%32;
+
+    ret_val = ((NVIC->ICPR[reg_index])>>IRQ_index) & 0x01U;
+    return ret_val;
+}
+
+/**=============================================
+  * @Fn				- MCAL_NVIC_SetPendingIRQ
+  * @brief 			- Set IRQn pending
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
+  */
+ void MCAL_NVIC_SetPendingIRQ(uint8 IRQn){
+    /* Check which ISPR register to write into */
+	uint8 reg_index = IRQn/32;
+
+	/* Get IRQn with respect to current register */
+	uint8 IRQ_index = IRQn%32;
+
+    NVIC->ISPR[reg_index] |= (1U<<IRQ_index);
+ }
+
+/**=============================================
+  * @Fn				- MCAL_NVIC_ClearPendingIRQ
+  * @brief 			- Clear IRQn pending status
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
+  */
+void MCAL_NVIC_ClearPendingIRQ(uint8 IRQn){
+    /* Check which ICPR register to write into */
+	uint8 reg_index = IRQn/32;
+
+	/* Get IRQn with respect to current register */
+	uint8 IRQ_index = IRQn%32;
+
+    NVIC->ICPR[reg_index] |= (1U<<IRQ_index);
+}
+
+uint8 MCAL_NVIC_GetActive(uint8 IRQn){
+    return (((SCB->ICSR)&0x000000FF)-16);
+}
+
+/**=============================================
+  * @Fn				- MCAL_NVIC_SetPriority
+  * @brief 			- Set priority for IRQn
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [in] 	- priority: priority of interrupt as defined in @ref Interrupt_Priorities_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
+  */
+void MCAL_NVIC_SetPriority(uint8 IRQn, uint8 priority){
+    /* Check which IPR register to write into */
+	uint8 reg_index = IRQn/32;
+
+	/* Get IRQn with respect to current register */
+	uint8 IRQ_index = IRQn%32;
+
+    NVIC->IP[(4*reg_index + IRQ_index)] = priority;
+}
+
+/**=============================================
+  * @Fn				- MCAL_NVIC_GetPriority
+  * @brief 			- Read priority of IRQn
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- Priority value, reutrn value should be one of values in @ref Interrupt_Requests_Numbers_define
+  * @retval 		- None
+  * Note			- None
+  */
+uint8 MCAL_NVIC_GetPriority(uint8 IRQn){
+    /* Check which IPR register to write into */
+	uint8 reg_index = IRQn/32;
+
+	/* Get IRQn with respect to current register */
+	uint8 IRQ_index = IRQn%32;
+
+    return NVIC->IP[(4*reg_index + IRQ_index)];
+}
+
+/**=============================================
+  * @Fn				- MCAL_NVIC_SystemReset
+  * @brief 			- Reset the system
+  * @param [in] 	- None
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
+  */
+void MCAL_NVIC_SystemReset(void){
+    
+}

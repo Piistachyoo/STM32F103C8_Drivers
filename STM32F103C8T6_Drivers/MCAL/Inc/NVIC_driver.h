@@ -35,6 +35,24 @@
 #define NVIC_PRIO_2GRP_8SUBGRP		0x600U
 #define NVIC_PRIO_0GRP_8SUBGRP		0x700U
 
+// @ref Interrupt_Priorities_define
+#define NVIC_PRIO_0000              0x00U
+#define NVIC_PRIO_0001              0x10U
+#define NVIC_PRIO_0010              0x20U
+#define NVIC_PRIO_0011              0x30U
+#define NVIC_PRIO_0100              0x40U
+#define NVIC_PRIO_0101              0x50U
+#define NVIC_PRIO_0110              0x60U
+#define NVIC_PRIO_0111              0x70U
+#define NVIC_PRIO_1000              0x80U
+#define NVIC_PRIO_1001              0x90U
+#define NVIC_PRIO_1010              0xA0U
+#define NVIC_PRIO_1011              0xB0U
+#define NVIC_PRIO_1100              0xC0U
+#define NVIC_PRIO_1101              0xD0U
+#define NVIC_PRIO_1110              0xE0U
+#define NVIC_PRIO_1111              0xF0U
+
 // @ref Interrupt_Requests_Numbers_define
 #define EXTI0_IRQ	6
 #define EXTI1_IRQ	7
@@ -90,72 +108,73 @@ void MCAL_NVIC_EnableIRQ(uint8 IRQn);
 void MCAL_NVIC_DisableIRQ(uint8 IRQn);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_GetPendingIRQ
+  * @brief 			- Return true (IRQ-Number) if IRQn is pending
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 uint8 MCAL_NVIC_GetPendingIRQ(uint8 IRQn);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_SetPendingIRQ
+  * @brief 			- Set IRQn pending
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 void MCAL_NVIC_SetPendingIRQ(uint8 IRQn);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_ClearPendingIRQ
+  * @brief 			- Clear IRQn pending status
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 void MCAL_NVIC_ClearPendingIRQ(uint8 IRQn);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_GetActive
+  * @brief 			- Return the IRQ number of the active interrupt
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 uint8 MCAL_NVIC_GetActive(uint8 IRQn);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_SetPriority
+  * @brief 			- Set priority for IRQn
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [in] 	- priority: priority of interrupt as defined in @ref Interrupt_Priorities_define
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 void MCAL_NVIC_SetPriority(uint8 IRQn, uint8 priority);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_GetPriority
+  * @brief 			- Read priority of IRQn
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- Priority value, reutrn value should be one of values in @ref Interrupt_Requests_Numbers_define
+  * @retval 		- None
+  * Note			- None
   */
-uint8 MCAL_NVIA_GetPriority(uint8 IRQn);
+uint8 MCAL_NVIC_GetPriority(uint8 IRQn);
 
 /**=============================================
-  * @Fn				-
-  * @brief 			-
-  * @param [in] 	-
-  * @param [out] 	-
-  * @retval 		-
-  * Note			-
+  * @Fn				- MCAL_NVIC_SystemReset
+  * @brief 			- Reset the system
+  * @param [in] 	- None
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- None
   */
 void MCAL_NVIC_SystemReset(void);
 
