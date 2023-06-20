@@ -24,14 +24,18 @@
 #define SRAM_MEMORY_BASE					0x20000000UL
 #define PERIPHERALS_BASE					0x40000000UL
 #define Cortex_M3_Internal_Peripherals_Base	0xE0000000UL
-#define NVIC_BASE							0xE000E100UL
+
 
 //----------------------------------------------
 // Section: Base addresses for Cortex-M3 Peripherals
 //----------------------------------------------
 
+#define NVIC_BASE							0xE000E100UL
+#define SCB_BASE							0xE000ED00UL
+#define STK_BASE							0xE000E010UL
+
 	/* NVIC: */
-#define NVIC_ISER0			(*(vuint32_t*)(NVIC_BASE))
+#define NVIC_ISER0			(*(vuint32_t*)(NVIC_BASE + 0x000))
 #define NVIC_ISER1			(*(vuint32_t*)(NVIC_BASE + 0x004))
 #define NVIC_ISER2			(*(vuint32_t*)(NVIC_BASE + 0x008))
 #define NVIC_ICER0			(*(vuint32_t*)(NVIC_BASE + 0x080))
@@ -46,9 +50,39 @@
 #define NVIC_IABR0			(*(vuint32_t*)(NVIC_BASE + 0x200))
 #define NVIC_IABR1			(*(vuint32_t*)(NVIC_BASE + 0x204))
 #define NVIC_IABR2			(*(vuint32_t*)(NVIC_BASE + 0x208))
+
 #define NVIC_IPR0			(*(vuint32_t*)(NVIC_BASE + 0x300))
 #define NVIC_IPR2			(*(vuint32_t*)(NVIC_BASE + 0x320))
 #define NVIC_STIR			(*(vuint32_t*)(NVIC_BASE + 0xE00))
+
+
+
+/*
+	 SCB
+
+#define SCB_CPUID			(*(vuint32_t*)(SCB_BASE))
+#define SCB_ICSR			(*(vuint32_t*)(SCB_BASE + 0x04))
+#define SCB_VTOR			(*(vuint32_t*)(SCB_BASE + 0x08))
+#define SCB_AIRCR			(*(vuint32_t*)(SCB_BASE + 0x0C))
+#define SCB_SCR				(*(vuint32_t*)(SCB_BASE + 0x10))
+#define SCB_CCR				(*(vuint32_t*)(SCB_BASE + 0x14))
+#define SCB_SHPR1			(*(vuint32_t*)(SCB_BASE + 0x18))
+#define SCB_SHPR2			(*(vuint32_t*)(SCB_BASE + 0x1C))
+#define SCB_SHPR3			(*(vuint32_t*)(SCB_BASE + 0x20))
+#define SCB_SHCRS			(*(vuint32_t*)(SCB_BASE + 0x24))
+#define SCB_CFSR			(*(vuint32_t*)(SCB_BASE + 0x28))
+#define SCB_HFSR			(*(vuint32_t*)(SCB_BASE + 0x2C))
+#define SCB_MMAR			(*(vuint32_t*)(SCB_BASE + 0x34))
+#define SCB_BFAR			(*(vuint32_t*)(SCB_BASE + 0x38))
+
+
+
+	 SysTick
+#define STK_CTRL			(*(vuint32_t*)(STK_BASE + 0x00))
+#define STK_LOAD			(*(vuint32_t*)(STK_BASE + 0x04))
+#define STK_VAL				(*(vuint32_t*)(STK_BASE + 0x08))
+#define STK_CALIB			(*(vuint32_t*)(STK_BASE + 0x0C))
+*/
 
 //----------------------------------------------
 // Section: Base addresses for AHB Peripherals
@@ -83,31 +117,55 @@
 // Section: Base addresses for APB1 Peripherals
 //----------------------------------------------
 
-//----------------------------------------------
-// Section: Interrupt Vector Table
-//----------------------------------------------
-#define EXTI0_IRQ	6
-#define EXTI1_IRQ	7
-#define EXTI2_IRQ	8
-#define EXTI3_IRQ	9
-#define EXTI4_IRQ	10
-#define EXTI5_IRQ	23
-#define EXTI6_IRQ	23
-#define EXTI7_IRQ	23
-#define EXTI8_IRQ	23
-#define EXTI9_IRQ	23
-#define EXTI10_IRQ	40
-#define EXTI11_IRQ	40
-#define EXTI12_IRQ	40
-#define EXTI13_IRQ	40
-#define EXTI14_IRQ	40
-#define EXTI15_IRQ	40
+
 
 //======================================================//
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 // Section: Peripheral registers
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+		/* NVIC */
+typedef struct{
+	vuint32_t ISER[3];
+	uint32 RESERVED0[29];
+	vuint32_t ICER[3];
+	uint32 RESERVED1[29];
+	vuint32_t ISPR[3];
+	uint32 RESERVED2[29];
+	vuint32_t ICPR[3];
+	uint32 RESERVED3[29];
+	vuint32_t IABR[3];
+	uint32 RESERVED4[61];
+	vuint8_t IP[80];
+	uint32 RESERVED5[684];
+	vuint32_t STIR;
+}NVIC_TypeDef;
+
+		/* SCB */
+typedef struct{
+	vuint32_t CPUID;
+	vuint32_t ICSR;
+	vuint32_t VTOR;
+	vuint32_t AIRCR;
+	vuint32_t SCR;
+	vuint32_t CCR;
+	vuint8_t  SHP[12];
+	vuint32_t SHCSR;
+	vuint32_t CFSR;
+	vuint32_t HFSR;
+	uint32	  RESERVED;
+	vuint32_t MMAR;
+	vuint32_t BFAR;
+}SCB_TypeDef;
+
+		/* STK */
+typedef struct{
+	vuint32_t CTRL;
+	vuint32_t LOAD;
+	vuint32_t VAL;
+	vuint32_t CALIB;
+}STK_TypeDef;
 
 		/* GPIO */
 typedef struct{
@@ -158,6 +216,10 @@ typedef struct{
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 // Section: Peripheral instants
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+#define NVIC		((NVIC_TypeDef*)NVIC_BASE)
+#define SCB			((SCB_TypeDef* )SCB_BASE )
+#define STK			((STK_TypeDef* )STK_BASE )
 
 #define GPIOA		((GPIO_TypeDef*)GPIOA_BASE)
 #define GPIOB		((GPIO_TypeDef*)GPIOB_BASE)

@@ -8,6 +8,7 @@
 /*************************************************************************/
 
 #include "ss_driver.h"
+#include "NVIC_driver.h"
 
 #define delay_duration	1500
 
@@ -16,49 +17,35 @@ void my_wait(int x);
 
 int main(void)
 {
-	clock_init();
-	SS_cfg_t SSD1;
-	SSD1.PINS[0].PIN.GPIO_PinNumber = GPIO_PIN_0;
-	SSD1.PINS[1].PIN.GPIO_PinNumber = GPIO_PIN_1;
-	SSD1.PINS[2].PIN.GPIO_PinNumber = GPIO_PIN_2;
-	SSD1.PINS[3].PIN.GPIO_PinNumber = GPIO_PIN_3;
-	SSD1.PINS[4].PIN.GPIO_PinNumber = GPIO_PIN_4;
-	SSD1.PINS[5].PIN.GPIO_PinNumber = GPIO_PIN_5;
-	SSD1.PINS[6].PIN.GPIO_PinNumber = GPIO_PIN_6;
-	SSD1.PINS[7].PIN.GPIO_PinNumber = GPIO_PIN_7;
-	SSD1.Active_Mode = SS_Common_Cathode;
-	for(int i = 0; i < 8; i++){
-		SSD1.PINS[i].PORT = GPIOA;
-		SSD1.PINS[i].PIN.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
-		SSD1.PINS[i].PIN.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
-	}
-	SS_Init(&SSD1);
-	SS_Display_Number(&SSD1, SS_ZERO, SS_DOT_ON);
+	MCAL_NVIC_EnableIRQ(EXTI0_IRQ);
+	MCAL_NVIC_EnableIRQ(EXTI1_IRQ);
+	MCAL_NVIC_EnableIRQ(EXTI2_IRQ);
+	MCAL_NVIC_EnableIRQ(EXTI3_IRQ);
+	MCAL_NVIC_EnableIRQ(EXTI4_IRQ);
+	MCAL_NVIC_EnableIRQ(EXTI5_IRQ);
+	MCAL_NVIC_EnableIRQ(EXTI10_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI0_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI1_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI2_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI3_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI4_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI5_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI10_IRQ);
 	while(1){
-		SS_Display_Number(&SSD1, SS_ZERO, SS_DOT_ON);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_ONE, SS_DOT_OFF);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_TWO, SS_DOT_ON);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_THREE, SS_DOT_OFF);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_FOUR, SS_DOT_ON);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_FIVE, SS_DOT_OFF);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_SIX, SS_DOT_ON);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_SEVEN, SS_DOT_OFF);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_EIGHT, SS_DOT_ON);
-		my_wait(1000);
-		SS_Display_Number(&SSD1, SS_NINE, SS_DOT_OFF);
-		my_wait(1000);
+
 	}
 }
 
 void clock_init(){
+	// Enable External oscillator HSE
+	RCC->CR |= (1UL<<16);
+	// Set External oscillator HSE as clock source
+	RCC->CFGR |= 0x01UL;
+	// Wait until HSE is the clock source
+	while(0x01 != ((RCC->CFGR >> 2) & 0x03UL));
+	// Disable Internal osciallator HSI
+	RCC->CR &= ~(1UL<<0);
+
 	RCC_GPIOA_CLK_EN();
 	RCC_GPIOB_CLK_EN();
 	RCC_AFIO_CLK_EN();

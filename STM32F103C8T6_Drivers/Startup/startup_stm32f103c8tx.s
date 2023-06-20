@@ -93,6 +93,10 @@ LoopFillZerobss:
 
 /* Call static constructors */
   bl __libc_init_array
+
+/* Initialize clock */
+  bl clock_init
+
 /* Call the application's entry point.*/
   bl main
 
