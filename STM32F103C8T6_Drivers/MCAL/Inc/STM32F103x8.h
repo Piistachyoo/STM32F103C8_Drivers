@@ -34,55 +34,6 @@
 #define SCB_BASE							0xE000ED00UL
 #define STK_BASE							0xE000E010UL
 
-	/* NVIC: */
-#define NVIC_ISER0			(*(vuint32_t*)(NVIC_BASE + 0x000))
-#define NVIC_ISER1			(*(vuint32_t*)(NVIC_BASE + 0x004))
-#define NVIC_ISER2			(*(vuint32_t*)(NVIC_BASE + 0x008))
-#define NVIC_ICER0			(*(vuint32_t*)(NVIC_BASE + 0x080))
-#define NVIC_ICER1			(*(vuint32_t*)(NVIC_BASE + 0x084))
-#define NVIC_ICER2			(*(vuint32_t*)(NVIC_BASE + 0x088))
-#define NVIC_ISPR0			(*(vuint32_t*)(NVIC_BASE + 0x100))
-#define NVIC_ISPR1			(*(vuint32_t*)(NVIC_BASE + 0x104))
-#define NVIC_ISPR2			(*(vuint32_t*)(NVIC_BASE + 0x108))
-#define NVIC_ICPR0			(*(vuint32_t*)(NVIC_BASE + 0x180))
-#define NVIC_ICPR1			(*(vuint32_t*)(NVIC_BASE + 0x184))
-#define NVIC_ICPR2			(*(vuint32_t*)(NVIC_BASE + 0x188))
-#define NVIC_IABR0			(*(vuint32_t*)(NVIC_BASE + 0x200))
-#define NVIC_IABR1			(*(vuint32_t*)(NVIC_BASE + 0x204))
-#define NVIC_IABR2			(*(vuint32_t*)(NVIC_BASE + 0x208))
-
-#define NVIC_IPR0			(*(vuint32_t*)(NVIC_BASE + 0x300))
-#define NVIC_IPR2			(*(vuint32_t*)(NVIC_BASE + 0x320))
-#define NVIC_STIR			(*(vuint32_t*)(NVIC_BASE + 0xE00))
-
-
-
-/*
-	 SCB
-
-#define SCB_CPUID			(*(vuint32_t*)(SCB_BASE))
-#define SCB_ICSR			(*(vuint32_t*)(SCB_BASE + 0x04))
-#define SCB_VTOR			(*(vuint32_t*)(SCB_BASE + 0x08))
-#define SCB_AIRCR			(*(vuint32_t*)(SCB_BASE + 0x0C))
-#define SCB_SCR				(*(vuint32_t*)(SCB_BASE + 0x10))
-#define SCB_CCR				(*(vuint32_t*)(SCB_BASE + 0x14))
-#define SCB_SHPR1			(*(vuint32_t*)(SCB_BASE + 0x18))
-#define SCB_SHPR2			(*(vuint32_t*)(SCB_BASE + 0x1C))
-#define SCB_SHPR3			(*(vuint32_t*)(SCB_BASE + 0x20))
-#define SCB_SHCRS			(*(vuint32_t*)(SCB_BASE + 0x24))
-#define SCB_CFSR			(*(vuint32_t*)(SCB_BASE + 0x28))
-#define SCB_HFSR			(*(vuint32_t*)(SCB_BASE + 0x2C))
-#define SCB_MMAR			(*(vuint32_t*)(SCB_BASE + 0x34))
-#define SCB_BFAR			(*(vuint32_t*)(SCB_BASE + 0x38))
-
-
-
-	 SysTick
-#define STK_CTRL			(*(vuint32_t*)(STK_BASE + 0x00))
-#define STK_LOAD			(*(vuint32_t*)(STK_BASE + 0x04))
-#define STK_VAL				(*(vuint32_t*)(STK_BASE + 0x08))
-#define STK_CALIB			(*(vuint32_t*)(STK_BASE + 0x0C))
-*/
 
 //----------------------------------------------
 // Section: Base addresses for AHB Peripherals
@@ -256,23 +207,6 @@ typedef struct{
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 // Section: NVIC IRQ enable/disable Macros
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-
-#define NVIC_IRQ6_EXTI0_Enable()		(NVIC_ISER0 |= (1<<6))
-#define NVIC_IRQ7_EXTI1_Enable()		(NVIC_ISER0 |= (1<<7))
-#define NVIC_IRQ8_EXTI2_Enable()		(NVIC_ISER0 |= (1<<8))
-#define NVIC_IRQ9_EXTI3_Enable()		(NVIC_ISER0 |= (1<<9))
-#define NVIC_IRQ10_EXTI4_Enable()		(NVIC_ISER0 |= (1<<10))
-#define NVIC_IRQ23_EXTI5_9_Enable()		(NVIC_ISER0 |= (1<<23))
-#define NVIC_IRQ40_EXTI10_15_Enable()	(NVIC_ISER1 |= (1<<8))
-
-
-#define NVIC_IRQ6_EXTI0_Disable()		(NVIC_ICER0 |= (1<<6))
-#define NVIC_IRQ7_EXTI1_Disable()		(NVIC_ICER0 |= (1<<7))
-#define NVIC_IRQ8_EXTI2_Disable()		(NVIC_ICER0 |= (1<<8))
-#define NVIC_IRQ9_EXTI3_Disable()		(NVIC_ICER0 |= (1<<9))
-#define NVIC_IRQ10_EXTI4_Disable()		(NVIC_ICER0 |= (1<<10))
-#define NVIC_IRQ23_EXTI5_9_Disable()	(NVIC_ICER0 |= (1<<23))
-#define NVIC_IRQ40_EXTI10_15_Disable()	(NVIC_ICER1 |= (1<<8))
 
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-

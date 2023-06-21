@@ -14,6 +14,7 @@
 //----------------------------------------------
 #include "STM32F103x8.h"
 #include "gpio_driver.h"
+#include "NVIC_driver.h"
 
 //----------------------------------------------
 // Section: User type definitions

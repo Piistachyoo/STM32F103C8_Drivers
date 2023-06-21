@@ -17,26 +17,26 @@ static void (*GP_IRQ_CallBack[15])(void);
 static void Enable_NVIC(uint8 IRQn){
 	switch(IRQn){
 	case EXTI0:
-		NVIC_IRQ6_EXTI0_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI0_IRQ);
 		break;
 	case EXTI1:
-		NVIC_IRQ7_EXTI1_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI1_IRQ);
 		break;
 	case EXTI2:
-		NVIC_IRQ8_EXTI2_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI2_IRQ);
 		break;
 	case EXTI3:
-		NVIC_IRQ9_EXTI3_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI3_IRQ);
 		break;
 	case EXTI4:
-		NVIC_IRQ10_EXTI4_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI4_IRQ);
 		break;
 	case EXTI5:
 	case EXTI6:
 	case EXTI7:
 	case EXTI8:
 	case EXTI9:
-		NVIC_IRQ23_EXTI5_9_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI5_IRQ);
 		break;
 	case EXTI10:
 	case EXTI11:
@@ -44,7 +44,7 @@ static void Enable_NVIC(uint8 IRQn){
 	case EXTI13:
 	case EXTI14:
 	case EXTI15:
-		NVIC_IRQ40_EXTI10_15_Enable();
+		MCAL_NVIC_EnableIRQ(EXTI12_IRQ);
 		break;
 	default: /* Do Nothing */ break;
 	}
@@ -53,26 +53,26 @@ static void Enable_NVIC(uint8 IRQn){
 static void Disable_NVIC(uint8 IRQn){
 	switch(IRQn){
 	case EXTI0:
-		NVIC_IRQ6_EXTI0_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI0_IRQ);
 		break;
 	case EXTI1:
-		NVIC_IRQ7_EXTI1_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI1_IRQ);
 		break;
 	case EXTI2:
-		NVIC_IRQ8_EXTI2_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI2_IRQ);
 		break;
 	case EXTI3:
-		NVIC_IRQ9_EXTI3_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI3_IRQ);
 		break;
 	case EXTI4:
-		NVIC_IRQ10_EXTI4_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI4_IRQ);
 		break;
 	case EXTI5:
 	case EXTI6:
 	case EXTI7:
 	case EXTI8:
 	case EXTI9:
-		NVIC_IRQ23_EXTI5_9_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI5_IRQ);
 		break;
 	case EXTI10:
 	case EXTI11:
@@ -80,7 +80,7 @@ static void Disable_NVIC(uint8 IRQn){
 	case EXTI13:
 	case EXTI14:
 	case EXTI15:
-		NVIC_IRQ40_EXTI10_15_Disable();
+		MCAL_NVIC_DisableIRQ(EXTI12_IRQ);
 		break;
 	default: /* Do Nothing */ break;
 	}
@@ -162,13 +162,13 @@ void MCAL_EXTI_GPIO_DeInit(void){
 	EXTI->PR = 0xFFFFFFFF;
 
 	/* Disable EXTI from NVIC */
-	NVIC_IRQ6_EXTI0_Disable();
-	NVIC_IRQ7_EXTI1_Disable();
-	NVIC_IRQ8_EXTI2_Disable();
-	NVIC_IRQ9_EXTI3_Disable();
-	NVIC_IRQ10_EXTI4_Disable();
-	NVIC_IRQ23_EXTI5_9_Disable();
-	NVIC_IRQ40_EXTI10_15_Disable();
+	MCAL_NVIC_DisableIRQ(EXTI0_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI1_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI2_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI3_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI4_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI5_IRQ);
+	MCAL_NVIC_DisableIRQ(EXTI12_IRQ);
 }
 
 /**=============================================
