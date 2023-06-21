@@ -40,6 +40,18 @@ void MCAL_NVIC_SetPriorityGrouping(uint32 priority_grouping){
 }
 
 /**=============================================
+  * @Fn				- MCAL_NVIC_GetPriorityGrouping
+  * @brief 			- Set the priority grouping
+  * @param [in] 	- None
+  * @param [out] 	- None
+  * @retval 		- Configuration of priority grouping @ref priority_groups_define
+  * Note			- None
+  */
+uint32 MCAL_NVIC_GetPriorityGrouping(void){
+	return ((SCB->AIRCR & NVIC_PRIGROUP_SET_MASK) >> 8);
+}
+
+/**=============================================
   * @Fn				- MCAL_NVIC_EnableIRQ
   * @brief 			- Enable IRQn
   * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
@@ -85,13 +97,13 @@ void MCAL_NVIC_DisableIRQ(uint8 IRQn){
   */
 uint8 MCAL_NVIC_GetPendingIRQ(uint8 IRQn){
     uint8 ret_val;
-    /* Check which ICPR register to write into */
+    /* Check which ISPR register to write into */
 	uint8 reg_index = IRQn/32;
 
 	/* Get IRQn with respect to current register */
 	uint8 IRQ_index = IRQn%32;
 
-    ret_val = ((NVIC->ICPR[reg_index])>>IRQ_index) & 0x01U;
+    ret_val = ((NVIC->ISPR[reg_index])>>IRQ_index) & 0x01UL;
     return ret_val;
 }
 
@@ -110,7 +122,7 @@ uint8 MCAL_NVIC_GetPendingIRQ(uint8 IRQn){
 	/* Get IRQn with respect to current register */
 	uint8 IRQ_index = IRQn%32;
 
-    NVIC->ISPR[reg_index] |= (1U<<IRQ_index);
+    NVIC->ISPR[reg_index] |= (1UL<<IRQ_index);
  }
 
 /**=============================================
@@ -131,8 +143,29 @@ void MCAL_NVIC_ClearPendingIRQ(uint8 IRQn){
     NVIC->ICPR[reg_index] |= (1U<<IRQ_index);
 }
 
+/**=============================================
+  * @Fn				- MCAL_NVIC_GetActive
+  * @brief 			- Return the IRQ number of the active interrupt
+  * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
+  * @param [out] 	- None
+  * @retval 		- returns 1 or 0 based on @ref interrupt_status_define
+  * Note			- None
+  */
 uint8 MCAL_NVIC_GetActive(uint8 IRQn){
-    return (((SCB->ICSR)&0x000000FF)-16);
+	uint8 ret_val;
+
+	/* Check which ICPR register to write into */
+	uint8 reg_index = IRQn/32;
+
+	/* Get IRQn with respect to current register */
+	uint8 IRQ_index = IRQn%32;
+
+	if(NVIC->IABR[reg_index] & (0x01UL<<IRQ_index)){
+		ret_val = NVIC_INTERRUPT_ACTIVE;
+	}
+	else{ ret_val = NVIC_INTERRUPT_INACTIVE; }
+
+    return ret_val;
 }
 
 /**=============================================
@@ -178,8 +211,11 @@ uint8 MCAL_NVIC_GetPriority(uint8 IRQn){
   * @param [in] 	- None
   * @param [out] 	- None
   * @retval 		- None
-  * Note			- None
+  * Note			- Keeps priority groups unchanged
   */
 void MCAL_NVIC_SystemReset(void){
-    
+    SCB->AIRCR = SCB_VECTKEY | (SCB->AIRCR & NVIC_PRIGROUP_SET_MASK) | (1UL << 2);
+
+    /* Wait until reset */
+    while(1);
 }

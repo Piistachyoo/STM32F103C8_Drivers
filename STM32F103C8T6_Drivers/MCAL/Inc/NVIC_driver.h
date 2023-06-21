@@ -24,9 +24,14 @@
 // Section: Macros Configuration References
 //----------------------------------------------
 
+#define SCB_VECTKEY					0x05FA0000UL
 #define SCB_VECTKEY_MASK			0xFFFF0000UL
 #define NVIC_PRIGROUP_SET_MASK		0x700UL
 #define NVIC_PRIGROUP_CLEAR_MASK	0xFFFFF8FFUL
+
+// @ref interrupt_status_define
+#define NVIC_INTERRUPT_ACTIVE		1UL
+#define NVIC_INTERRUPT_INACTIVE		0UL
 
 // @ref priority_groups_define
 #define NVIC_PRIO_16GRP_0SUBGRP		0x300U
@@ -88,6 +93,16 @@
 void MCAL_NVIC_SetPriorityGrouping(uint32 priority_grouping);
 
 /**=============================================
+  * @Fn				- MCAL_NVIC_GetPriorityGrouping
+  * @brief 			- Set the priority grouping
+  * @param [in] 	- None
+  * @param [out] 	- None
+  * @retval 		- Configuration of priority grouping @ref priority_groups_define
+  * Note			- None
+  */
+uint32 MCAL_NVIC_GetPriorityGrouping(void);
+
+/**=============================================
   * @Fn				- MCAL_NVIC_EnableIRQ
   * @brief 			- Enable IRQn
   * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
@@ -142,7 +157,7 @@ void MCAL_NVIC_ClearPendingIRQ(uint8 IRQn);
   * @brief 			- Return the IRQ number of the active interrupt
   * @param [in] 	- IRQn: Number of interrupt request as defined in vector table or in @ref Interrupt_Requests_Numbers_define
   * @param [out] 	- None
-  * @retval 		- None
+  * @retval 		- returns 1 or 0 based on @ref interrupt_status_define
   * Note			- None
   */
 uint8 MCAL_NVIC_GetActive(uint8 IRQn);
@@ -174,7 +189,7 @@ uint8 MCAL_NVIC_GetPriority(uint8 IRQn);
   * @param [in] 	- None
   * @param [out] 	- None
   * @retval 		- None
-  * Note			- None
+  * Note			- Keeps priority groups unchanged
   */
 void MCAL_NVIC_SystemReset(void);
 
