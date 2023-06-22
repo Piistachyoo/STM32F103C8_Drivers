@@ -177,7 +177,7 @@ typedef struct{
 
 /*
  * =============================================
- * APIs Supported by "Driver Name"
+ * APIs Supported by "EXTI"
  * =============================================
  */
 
