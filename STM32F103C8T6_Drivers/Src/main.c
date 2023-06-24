@@ -7,36 +7,57 @@
 /* GitHub        : https://github.com/Piistachyoo             		     */
 /*************************************************************************/
 
-#include "ss_driver.h"
-#include "NVIC_driver.h"
+#include "led_driver.h"
+#include "systick_driver.h"
 
-#define delay_duration	1500
+volatile uint32 stk_timer = 1;
+volatile uint8 stk_flag = 0;
+
 
 void clock_init();
-void my_wait(int x);
 
 int main(void)
 {
-	MCAL_NVIC_EnableIRQ(EXTI0_IRQ);
-	MCAL_NVIC_EnableIRQ(EXTI1_IRQ);
-	MCAL_NVIC_EnableIRQ(EXTI2_IRQ);
-	MCAL_NVIC_EnableIRQ(EXTI3_IRQ);
-	MCAL_NVIC_EnableIRQ(EXTI4_IRQ);
-	MCAL_NVIC_EnableIRQ(EXTI5_IRQ);
-	MCAL_NVIC_EnableIRQ(EXTI10_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI0_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI1_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI2_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI3_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI4_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI5_IRQ);
-	MCAL_NVIC_DisableIRQ(EXTI10_IRQ);
-	while(1){
+	LED_cfg_t LED1;
+	LED_cfg_t LED2;
+	LED_cfg_t LED3;
+	LED1.LED_Mode = LED_Active_High;
+	LED1.LED_Port = GPIOA;
+	LED1.LED_Pin.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
+	LED1.LED_Pin.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
+	LED1.LED_Pin.GPIO_PinNumber = GPIO_PIN_0;
+	LED_Init(&LED1);
+	LED2.LED_Mode = LED_Active_High;
+	LED2.LED_Port = GPIOA;
+	LED2.LED_Pin.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
+	LED2.LED_Pin.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
+	LED2.LED_Pin.GPIO_PinNumber = GPIO_PIN_1;
+	LED_Init(&LED2);
+	LED3.LED_Mode = LED_Active_High;
+	LED3.LED_Port = GPIOA;
+	LED3.LED_Pin.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
+	LED3.LED_Pin.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
+	LED3.LED_Pin.GPIO_PinNumber = GPIO_PIN_2;
+	LED_Init(&LED3);
 
+	while(1){
+		LED_TurnOn(&LED1);
+		MCAL_STK_Delay1ms(1000);
+		LED_TurnOn(&LED2);
+		MCAL_STK_Delay1ms(1000);
+		LED_TurnOn(&LED3);
+		MCAL_STK_Delay1ms(2000);
+		LED_TurnOff(&LED3);
+		MCAL_STK_Delay1ms(500);
+		LED_TurnOff(&LED2);
+		MCAL_STK_Delay1ms(500);
+		LED_TurnOff(&LED1);
+		MCAL_STK_Delay1ms(500);
 	}
 }
 
 void clock_init(){
+
 	// Enable External oscillator HSE
 	RCC->CR |= (1UL<<16);
 	// Set External oscillator HSE as clock source
@@ -46,14 +67,9 @@ void clock_init(){
 	// Disable Internal osciallator HSI
 	RCC->CR &= ~(1UL<<0);
 
+
 	RCC_GPIOA_CLK_EN();
 	RCC_GPIOB_CLK_EN();
 	RCC_AFIO_CLK_EN();
 }
 
-void my_wait(int x){
-	uint16 i, j;
-	for(i = 0; i < x; i++){
-		for(j = 0; j < 255; j++);
-	}
-}

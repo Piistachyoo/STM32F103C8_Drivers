@@ -34,6 +34,9 @@ typedef struct{
 #define STK_CLK_MASK			0x04UL
 #define STK_RELOAD_MASK			0x00FFFFFFUL
 
+// @ref stk_cpu_freq_define
+#define STK_FCPU				8000000UL
+
 // @ref stk_interrupt_config_define
 #define STK_INTERRUPT_ENABLED	0x02UL
 #define STK_INTERRUPT_DISABLED	0x00UL
@@ -102,6 +105,24 @@ void MCAL_STK_StartTimer();
   */
 void MCAL_STK_StopTimer();
 
+/**=============================================
+  * @Fn				- MCAL_STK_Delay
+  * @brief 			- Starts the SysTick timer one time for specific number of ticks
+  * @param [in] 	- delay_ticks: Number of ticks required
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- Restores previous configuration and reload value of the SysTick timer
+  */
+void MCAL_STK_Delay(uint32 delay_ticks);
 
+/**=============================================
+  * @Fn				- MCAL_STK_Delay1ms
+  * @brief 			- Delays the system for specific number of milliseconds
+  * @param [in] 	- delay_ms: Number of milliseconds delay needed
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- User must define the frequency of the SysTick timer in @ref stk_cpu_freq_define
+  */
+void MCAL_STK_Delay1ms(uint32 delay_ms);
 
 #endif /* MCAL_INC_SYSTICK_DRIVER_H_ */

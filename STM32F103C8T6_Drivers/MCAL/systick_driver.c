@@ -12,33 +12,6 @@
 static void (*STK_Callback)(void);
 static uint8 Running_Mode; // Flag to determine the SysTick running mode
 
-void MCAL_STK_Delay(uint32 delay_ticks){
-	/* Read previous reload value */
-	uint32 prev_reload = STK->LOAD;
-
-	/* Read previous SysTick Configuration */
-	uint32 prev_cfg = STK->CTRL;
-
-	/* Disable interrupt */
-	STK->CTRL &= ~(STK_INTERRUPT_MASK);
-
-	/* Set new reload value */
-	MCAL_STK_SetReload(delay_ticks);
-
-	/* Start timer */
-	MCAL_STK_StartTimer();
-
-	/* Wait for flag to be set */
-	while( ( (STK->CTRL >> 16) & 0x01UL ) == 0);
-
-	/* Stop timer */
-	MCAL_STK_StopTimer();
-
-	/* Restore previous configuration and reload value */
-	STK->LOAD = prev_reload;
-	STK->CTRL = prev_cfg;
-}
-
 /**=============================================
   * @Fn				- MCAL_STK_Config
   * @brief 			- Configures the SysTick clock and interrupt
@@ -125,6 +98,63 @@ void MCAL_STK_StartTimer(){
 void MCAL_STK_StopTimer(){
 	/* Reset the enable bit */
 	STK->CTRL &= ~(0x01UL);
+}
+
+/**=============================================
+  * @Fn				- MCAL_STK_Delay
+  * @brief 			- Starts the SysTick timer one time for specific number of ticks
+  * @param [in] 	- delay_ticks: Number of ticks required
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- Restores previous configuration and reload value of the SysTick timer
+  */
+void MCAL_STK_Delay(uint32 delay_ticks){
+	/* Read previous reload value */
+	uint32 prev_reload = STK->LOAD;
+
+	/* Read previous SysTick Configuration */
+	uint32 prev_cfg = STK->CTRL;
+
+	/* Disable SysTick timer */
+	STK->CTRL  = 0;
+
+	/* Clear count flag */
+	STK->CTRL &= (1UL<<16);
+
+	/* Set new reload value */
+	MCAL_STK_SetReload(delay_ticks - 1);
+
+	/* Set system clock as the clock source */
+	STK->CTRL |= (1UL<<2);
+
+	/* Start timer */
+	MCAL_STK_StartTimer();
+
+	/* Wait for flag to be set */
+	while( ( (STK->CTRL >> 16) & 0x01UL ) == 0);
+
+	/* Stop timer */
+	MCAL_STK_StopTimer();
+
+	/* Restore previous configuration and reload value */
+	STK->LOAD = prev_reload;
+	STK->CTRL = prev_cfg;
+}
+
+/**=============================================
+  * @Fn				- MCAL_STK_Delay1ms
+  * @brief 			- Delays the system for specific number of milliseconds
+  * @param [in] 	- delay_ms: Number of milliseconds delay needed
+  * @param [out] 	- None
+  * @retval 		- None
+  * Note			- User must define the frequency of the SysTick timer in @ref stk_cpu_freq_define
+  */
+void MCAL_STK_Delay1ms(uint32 delay_ms){
+	uint32 index;
+	uint32 ms_delay_time = ((STK_FCPU/1000UL)-1);
+	for(index = 0; index < delay_ms; index++){
+		MCAL_STK_Delay(ms_delay_time);
+	}
 }
 
 void SysTick_Handler(void){
