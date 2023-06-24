@@ -13,6 +13,7 @@
 // Section: Includes
 //----------------------------------------------
 #include "gpio_driver.h"
+#include "systick_driver.h"
 
 //----------------------------------------------
 // Section: Macros Configuration References

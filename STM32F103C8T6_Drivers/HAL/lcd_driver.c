@@ -50,12 +50,6 @@ static void LCD_GPIO_Init(){
 	MCAL_GPIO_Init(LCD_PORT, &PIN_CFG);
 }
 
-static void delay(uint32 time) {
-	uint32 i, j;
-	for (i = 0; i < time; i++)
-		for (j = 0; j < 255; j++);
-}
-
 /**=============================================
   * @Fn				- LCD_Init
   * @brief 			- Initialized LCD based on user defined configurations
@@ -67,19 +61,19 @@ static void delay(uint32 time) {
 void LCD_Init(){
 	// Initialize GPIO Pins
 	LCD_GPIO_Init();
-	delay(5);
+	MCAL_STK_Delay1ms(2);
 #if LCD_MODE == LCD_8BIT_MODE
 	// Send Function Set
 	LCD_Send_Command(LCD_8BIT_MODE_2_LINE);
-	delay(1);
+	MCAL_STK_Delay1ms(1);
 
 	// Set Display Settings
 	LCD_Send_Command(DISPLAY_MODE);
-	delay(1);
+	MCAL_STK_Delay1ms(1);
 
 	// Send clear display command
 	LCD_Send_Command(LCD_CLEAR_DISPLAY);
-	delay(1);
+	MCAL_STK_Delay1ms(2);
 
 	// Set Entry Mode Settings
 	LCD_Send_Command(ENTRY_MODE);
@@ -87,28 +81,30 @@ void LCD_Init(){
 #elif LCD_MODE == LCD_4BIT_MODE
 	MCAL_GPIO_WritePin(LCD_PORT, RS_PIN, GPIO_PIN_RESET);
 	MCAL_GPIO_WritePin(LCD_PORT, RW_PIN, GPIO_PIN_RESET);
-	delay(1);
+	MCAL_STK_Delay1ms(1);
+
 	// Send Function Set
 	MCAL_GPIO_WritePin(LCD_PORT, D4_PIN, (LCD_4BIT_MODE_2_LINE&0x10));
 	MCAL_GPIO_WritePin(LCD_PORT, D5_PIN, (LCD_4BIT_MODE_2_LINE&0x20));
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (LCD_4BIT_MODE_2_LINE&0x40));
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (LCD_4BIT_MODE_2_LINE&0x80));
+	MCAL_STK_Delay1ms(1);
 	LCD_Send_Enable_Signal();
-//	delay(3);
+
 	LCD_Send_Command(LCD_4BIT_MODE_2_LINE);
-	delay(2);
+	MCAL_STK_Delay1ms(1);
 
 	// Set Display Settings
 	LCD_Send_Command(DISPLAY_MODE);
-	delay(2);
+	MCAL_STK_Delay1ms(1);
 
 	// Send clear display command
 	LCD_Send_Command(LCD_CLEAR_DISPLAY);
-	delay(4);
+	MCAL_STK_Delay1ms(2);
 
 	// Set Entry Mode Settings
 	LCD_Send_Command(ENTRY_MODE);
-	delay(2);
+	MCAL_STK_Delay1ms(1);
 #endif
 }
 
@@ -123,7 +119,7 @@ void LCD_Init(){
 void LCD_Send_Command(uint8 command){
 	MCAL_GPIO_WritePin(LCD_PORT, RS_PIN, GPIO_PIN_RESET);
 	MCAL_GPIO_WritePin(LCD_PORT, RW_PIN, GPIO_PIN_RESET);
-	delay(1);
+	MCAL_STK_Delay1ms(1);
 #if LCD_MODE == LCD_8BIT_MODE
 	MCAL_GPIO_WritePin(LCD_PORT, D0_PIN, (command&0x01));
 	MCAL_GPIO_WritePin(LCD_PORT, D1_PIN, (command&0x02));
@@ -139,14 +135,14 @@ void LCD_Send_Command(uint8 command){
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (command&0x40));
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (command&0x80));
 	LCD_Send_Enable_Signal();
-	delay(1);
+	MCAL_STK_Delay1ms(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D4_PIN, (command&0x01));
 	MCAL_GPIO_WritePin(LCD_PORT, D5_PIN, (command&0x02));
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (command&0x04));
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (command&0x08));
 #endif
+	MCAL_STK_Delay1ms(1);
 	LCD_Send_Enable_Signal();
-	delay(1);
 }
 
 /**=============================================
@@ -160,7 +156,7 @@ void LCD_Send_Command(uint8 command){
 void LCD_Send_Char(uint8 Char){
 	MCAL_GPIO_WritePin(LCD_PORT, RS_PIN, GPIO_PIN_SET);
 	MCAL_GPIO_WritePin(LCD_PORT, RW_PIN, GPIO_PIN_RESET);
-	delay(1);
+	MCAL_STK_Delay1ms(1);
 #if LCD_MODE == LCD_8BIT_MODE
 	MCAL_GPIO_WritePin(LCD_PORT, D0_PIN, (Char&0x01));
 	MCAL_GPIO_WritePin(LCD_PORT, D1_PIN, (Char&0x02));
@@ -175,15 +171,15 @@ void LCD_Send_Char(uint8 Char){
 	MCAL_GPIO_WritePin(LCD_PORT, D5_PIN, (Char&0x20));
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (Char&0x40));
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (Char&0x80));
+	MCAL_STK_Delay1ms(1);
 	LCD_Send_Enable_Signal();
-	delay(1);
 	MCAL_GPIO_WritePin(LCD_PORT, D4_PIN, (Char&0x01));
 	MCAL_GPIO_WritePin(LCD_PORT, D5_PIN, (Char&0x02));
 	MCAL_GPIO_WritePin(LCD_PORT, D6_PIN, (Char&0x04));
 	MCAL_GPIO_WritePin(LCD_PORT, D7_PIN, (Char&0x08));
 #endif
+	MCAL_STK_Delay1ms(1);
 	LCD_Send_Enable_Signal();
-	delay(1);
 }
 
 /**=============================================
@@ -241,9 +237,9 @@ void LCD_Send_string_Pos(uint8 *string, uint8 row, uint8 column){
   */
 void LCD_Send_Enable_Signal(){
 	MCAL_GPIO_WritePin(LCD_PORT, EN_PIN, GPIO_PIN_SET);
-	delay(2);
+	MCAL_STK_Delay1ms(1);
 	MCAL_GPIO_WritePin(LCD_PORT, EN_PIN, GPIO_PIN_RESET);
-	delay(2);
+	MCAL_STK_Delay1ms(1);
 }
 
 /**=============================================
