@@ -64,10 +64,16 @@
 		/* AFIO */
 #define AFIO_BASE	0x40010000UL
 
+		/* USART */
+#define USART1_BASE	0x40013800UL
+
 //----------------------------------------------
 // Section: Base addresses for APB1 Peripherals
 //----------------------------------------------
 
+		/* USART */
+#define USART2_BASE	0x40004400UL
+#define USART3_BASE	0x40004800UL
 
 
 //======================================================//
@@ -162,6 +168,17 @@ typedef struct{
 	vuint32_t MAPR2;
 }AFIO_TypeDef;
 
+		/* USART */
+typedef struct{
+	vuint32_t SR;
+	vuint32_t DR;
+	vuint32_t BRR;
+	vuint32_t CR1;
+	vuint32_t CR2;
+	vuint32_t CR3;
+	vuint32_t GTPR;
+}USART_TypeDef;
+
 //======================================================//
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -186,28 +203,11 @@ typedef struct{
 
 #define AFIO		((AFIO_TypeDef*)AFIO_BASE)
 
-//======================================================//
-
-//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-// Section: Clock enable macros
-//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-
-#define	RCC_GPIOA_CLK_EN()	(RCC->APB2ENR |= (1<<2))
-#define	RCC_GPIOB_CLK_EN()	(RCC->APB2ENR |= (1<<3))
-#define	RCC_GPIOC_CLK_EN()	(RCC->APB2ENR |= (1<<4))
-#define	RCC_GPIOD_CLK_EN()	(RCC->APB2ENR |= (1<<5))
-#define	RCC_GPIOE_CLK_EN()	(RCC->APB2ENR |= (1<<6))
-#define	RCC_GPIOF_CLK_EN()	(RCC->APB2ENR |= (1<<7))
-#define	RCC_GPIOG_CLK_EN()	(RCC->APB2ENR |= (1<<8))
-
-#define RCC_AFIO_CLK_EN()	(RCC->APB2ENR |= (1<<0))
+#define USART1		((USART_TypeDef*)USART1_BASE)
+#define USART2		((USART_TypeDef*)USART2_BASE)
+#define USART3		((USART_TypeDef*)USART3_BASE)
 
 //======================================================//
-
-//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-// Section: NVIC IRQ enable/disable Macros
-//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 // Section: Generic macros

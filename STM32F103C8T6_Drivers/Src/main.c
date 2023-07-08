@@ -7,8 +7,7 @@
 /* GitHub        : https://github.com/Piistachyoo             		     */
 /*************************************************************************/
 
-#include "led_driver.h"
-#include "systick_driver.h"
+#include "USART_driver.h"
 
 volatile uint32 stk_timer = 1;
 volatile uint8 stk_flag = 0;
@@ -18,58 +17,31 @@ void clock_init();
 
 int main(void)
 {
-	LED_cfg_t LED1;
-	LED_cfg_t LED2;
-	LED_cfg_t LED3;
-	LED1.LED_Mode = LED_Active_High;
-	LED1.LED_Port = GPIOA;
-	LED1.LED_Pin.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
-	LED1.LED_Pin.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
-	LED1.LED_Pin.GPIO_PinNumber = GPIO_PIN_0;
-	LED_Init(&LED1);
-	LED2.LED_Mode = LED_Active_High;
-	LED2.LED_Port = GPIOA;
-	LED2.LED_Pin.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
-	LED2.LED_Pin.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
-	LED2.LED_Pin.GPIO_PinNumber = GPIO_PIN_1;
-	LED_Init(&LED2);
-	LED3.LED_Mode = LED_Active_High;
-	LED3.LED_Port = GPIOA;
-	LED3.LED_Pin.GPIO_MODE = GPIO_MODE_OUTPUT_PP;
-	LED3.LED_Pin.GPIO_OUTPUT_SPEED = GPIO_SPEED_10M;
-	LED3.LED_Pin.GPIO_PinNumber = GPIO_PIN_2;
-	LED_Init(&LED3);
-
+	USART_cfg_t myUART1;
+	uint16 temp;
+	myUART1.BaudRate = 9600;
+	myUART1.HwFlowCtl = UART_HwFlowCtl_NONE;
+	myUART1.IRQ_Enable = UART_IRQ_Enable_NONE;
+	myUART1.Parity = UART_Parity_NONE;
+	myUART1.Payload_Length = UART_Payload_Length_8B;
+	myUART1.StopBits = UART_StopBits_1;
+	myUART1.USART_Mode = UART_Mode_TX_RX;
+	MCAL_USART_Init(USART2, &myUART1);
 	while(1){
-		LED_TurnOn(&LED1);
-		MCAL_STK_Delay1ms(1000);
-		LED_TurnOn(&LED2);
-		MCAL_STK_Delay1ms(1000);
-		LED_TurnOn(&LED3);
-		MCAL_STK_Delay1ms(2000);
-		LED_TurnOff(&LED3);
-		MCAL_STK_Delay1ms(500);
-		LED_TurnOff(&LED2);
-		MCAL_STK_Delay1ms(500);
-		LED_TurnOff(&LED1);
-		MCAL_STK_Delay1ms(500);
+		MCAL_USART_ReceiveData(USART2, &temp, enable);
+		MCAL_USART_SendData(USART2, &temp, enable);
+		MCAL_USART_Wait_TC(USART2);
 	}
 }
 
 void clock_init(){
 
-	// Enable External oscillator HSE
-	RCC->CR |= (1UL<<16);
-	// Set External oscillator HSE as clock source
-	RCC->CFGR |= 0x01UL;
-	// Wait until HSE is the clock source
-	while(0x01 != ((RCC->CFGR >> 2) & 0x03UL));
-	// Disable Internal osciallator HSI
-	RCC->CR &= ~(1UL<<0);
-
-
-	RCC_GPIOA_CLK_EN();
-	RCC_GPIOB_CLK_EN();
-	RCC_AFIO_CLK_EN();
+	MCAL_RCC_Select_Clock(RCC_SELECT_HSE);
+/*
+	MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
+	MCAL_RCC_Enable_Peripheral(RCC_GPIOB);
+	MCAL_RCC_Enable_Peripheral(RCC_GPIOC);
+	MCAL_RCC_Enable_Peripheral(RCC_AFIO);
+	MCAL_RCC_Enable_Peripheral(RCC_USART1);*/
 }
 

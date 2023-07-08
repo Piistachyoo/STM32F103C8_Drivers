@@ -76,6 +76,10 @@
 #define EXTI14_IRQ	40
 #define EXTI15_IRQ	40
 
+#define USART1_IRQ	37
+#define USART2_IRQ	38
+#define USART3_IRQ	39
+
 /*
  * =============================================
  * APIs Supported by "NVIC"
