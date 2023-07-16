@@ -10,12 +10,12 @@
 #include "USART_driver.h"
 
 /* BaudRate macros */
-#define USARTDIV(_PCLK_, _BAUD_)            (unsigned long)(_PCLK_/(16 * _BAUD_))
-#define USARTDIV_MUL100(_PCLK_, _BAUD_)     (unsigned long)((25 * _PCLK_) / (4 * _BAUD_))
-#define MANTISSA(_PCLK_, _BAUD_)            (unsigned long)(USARTDIV(_PCLK_, _BAUD_))
-#define MANTISSA_MUL100(_PCLK_, _BAUD_)     (unsigned long)(USARTDIV(_PCLK_, _BAUD_) * 100)
-#define DIV_FRACTION(_PCLK_, _BAUD_)        (unsigned long)(((USARTDIV_MUL100(_PCLK_, _BAUD_) - MANTISSA_MUL100(_PCLK_, _BAUD_)) * 16) / 100)
-#define UART_BRR_REGISTER(_PCLK_, _BAUD_)   (unsigned long)((MANTISSA(_PCLK_, _BAUD_) << 4)|(DIV_FRACTION(_PCLK_, _BAUD_)&0xF))
+#define USARTDIV(_PCLK_, _BAUD_)            (uint32)(_PCLK_/(16 * _BAUD_))
+#define USARTDIV_MUL100(_PCLK_, _BAUD_)     (uint32)((25 * _PCLK_) / (4 * _BAUD_))
+#define MANTISSA(_PCLK_, _BAUD_)            (uint32)(USARTDIV(_PCLK_, _BAUD_))
+#define MANTISSA_MUL100(_PCLK_, _BAUD_)     (uint32)(USARTDIV(_PCLK_, _BAUD_) * 100)
+#define DIV_FRACTION(_PCLK_, _BAUD_)        (uint32)(((USARTDIV_MUL100(_PCLK_, _BAUD_) - MANTISSA_MUL100(_PCLK_, _BAUD_)) * 16) / 100)
+#define UART_BRR_REGISTER(_PCLK_, _BAUD_)   (uint32)((MANTISSA(_PCLK_, _BAUD_) << 4)|(DIV_FRACTION(_PCLK_, _BAUD_)&0xF))
 
 /* Variables */
 USART_cfg_t* Global_USART_cfg[3];
@@ -30,19 +30,21 @@ USART_cfg_t* Global_USART_cfg[3];
   */
 void MCAL_USART_Init(USART_TypeDef* USARTx, USART_cfg_t* USART_cfg){
 	uint32 BRR, pclk;
-//	Global_USART_cfg = USART_cfg;
 
 	/* Enable clock for given USART peripheral */
 	if(USART1 == USARTx){
 		MCAL_RCC_Enable_Peripheral(RCC_USART1);
+		MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
 		Global_USART_cfg[0] = USART_cfg;
 	}
 	else if(USART2 == USARTx){
 		MCAL_RCC_Enable_Peripheral(RCC_USART2);
+		MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
 		Global_USART_cfg[1] = USART_cfg;
 	}
 	else if(USART3 == USARTx){
 		MCAL_RCC_Enable_Peripheral(RCC_USART3);
+		MCAL_RCC_Enable_Peripheral(RCC_GPIOB);
 		Global_USART_cfg[2] = USART_cfg;
 	}
 	else{ /* Do Nothing */ }
@@ -275,7 +277,7 @@ void MCAL_USART_SendData(USART_TypeDef* USARTx, uint16 *pTxBuffer, Polling_Mecha
 			USARTx->DR = (*pTxBuffer & (uint16)0x01FF);
 		}
 		else{
-			USARTx->DR = (*pTxBuffer & (uint8)0xFF);
+			USARTx->DR = (*pTxBuffer & (uint16)0xFF);
 		}
 	}
 	else if(USART2 == USARTx){
@@ -283,7 +285,7 @@ void MCAL_USART_SendData(USART_TypeDef* USARTx, uint16 *pTxBuffer, Polling_Mecha
 			USARTx->DR = (*pTxBuffer & (uint16)0x01FF);
 		}
 		else{
-			USARTx->DR = (uint8)(*pTxBuffer & (uint8)0xFF);
+			USARTx->DR = (*pTxBuffer & (uint16)0xFF);
 		}
 	}
 	else if(USART3 == USARTx){
@@ -291,7 +293,7 @@ void MCAL_USART_SendData(USART_TypeDef* USARTx, uint16 *pTxBuffer, Polling_Mecha
 			USARTx->DR = (*pTxBuffer & (uint16)0x01FF);
 		}
 		else{
-			USARTx->DR = (*pTxBuffer & (uint8)0xFF);
+			USARTx->DR = (*pTxBuffer & (uint16)0xFF);
 		}
 	}
 	else{ /* Do Nothing */ }
