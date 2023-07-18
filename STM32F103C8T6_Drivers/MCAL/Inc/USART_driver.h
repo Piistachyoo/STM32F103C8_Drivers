@@ -122,7 +122,7 @@ void MCAL_USART_DeInit(USART_TypeDef* USARTx);
   * @brief 			- Initializes GPIO pins
   * @param [in] 	- USARTx: Pointer to the USART peripheral instance, where x can be (1..3 depending on device used)
   * @retval 		- None
-  * Note			- Should enable the corresponding ALT & GPIO in RCC clock, called after MCAL_UART_Init()
+  * Note			- Called automatically at the end of MCAL_UART_Init()
   */
 void MCAL_USART_GPIO_Set_Pins(USART_TypeDef* USARTx);
 

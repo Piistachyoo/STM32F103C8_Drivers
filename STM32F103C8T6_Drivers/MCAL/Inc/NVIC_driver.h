@@ -80,6 +80,9 @@
 #define USART2_IRQ	38
 #define USART3_IRQ	39
 
+#define SPI1_IRQ	35
+#define SPI2_IRQ	36
+
 /*
  * =============================================
  * APIs Supported by "NVIC"

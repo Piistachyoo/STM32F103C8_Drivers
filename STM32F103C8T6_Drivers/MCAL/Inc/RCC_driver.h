@@ -42,6 +42,8 @@
 #define RCC_USART1		(uint8)0x08
 #define RCC_USART2		(uint8)0x09
 #define RCC_USART3		(uint8)0x0A
+#define RCC_SPI1		(uint8)0x0B
+#define RCC_SPI2		(uint8)0x0C
 
 /*
  * =============================================

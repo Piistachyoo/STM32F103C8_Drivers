@@ -34,17 +34,14 @@ void MCAL_USART_Init(USART_TypeDef* USARTx, USART_cfg_t* USART_cfg){
 	/* Enable clock for given USART peripheral */
 	if(USART1 == USARTx){
 		MCAL_RCC_Enable_Peripheral(RCC_USART1);
-		MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
 		Global_USART_cfg[0] = USART_cfg;
 	}
 	else if(USART2 == USARTx){
 		MCAL_RCC_Enable_Peripheral(RCC_USART2);
-		MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
 		Global_USART_cfg[1] = USART_cfg;
 	}
 	else if(USART3 == USARTx){
 		MCAL_RCC_Enable_Peripheral(RCC_USART3);
-		MCAL_RCC_Enable_Peripheral(RCC_GPIOB);
 		Global_USART_cfg[2] = USART_cfg;
 	}
 	else{ /* Do Nothing */ }
@@ -131,7 +128,7 @@ void MCAL_USART_DeInit(USART_TypeDef* USARTx){
   * @brief 			- Initializes GPIO pins
   * @param [in] 	- USARTx: Pointer to the USART peripheral instance, where x can be (1..3 depending on device used)
   * @retval 		- None
-  * Note			- Should enable the corresponding ALT & GPIO in RCC clock, called after MCAL_UART_Init()
+  * Note			- Called automatically at the end of MCAL_UART_Init()
   */
 void MCAL_USART_GPIO_Set_Pins(USART_TypeDef* USARTx){
 
@@ -144,7 +141,7 @@ void MCAL_USART_GPIO_Set_Pins(USART_TypeDef* USARTx){
 		 * PA11 CTS
 		 * PA12 RTS
 		 */
-
+		MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
 		// PA9 TX
 		PinCfg.GPIO_PinNumber = GPIO_PIN_9;
 		PinCfg.GPIO_MODE = GPIO_MODE_OUTPUT_AF_PP;
@@ -180,7 +177,7 @@ void MCAL_USART_GPIO_Set_Pins(USART_TypeDef* USARTx){
 		 * PA0 CTS
 		 * PA1 RTS
 		 */
-
+		MCAL_RCC_Enable_Peripheral(RCC_GPIOA);
 		// PA2 TX
 		PinCfg.GPIO_PinNumber = GPIO_PIN_2;
 		PinCfg.GPIO_MODE = GPIO_MODE_OUTPUT_AF_PP;
@@ -216,7 +213,7 @@ void MCAL_USART_GPIO_Set_Pins(USART_TypeDef* USARTx){
 		 * PB13 CTS
 		 * PB14 RTS
 		 */
-
+		MCAL_RCC_Enable_Peripheral(RCC_GPIOB);
 		// PB10 TX
 		PinCfg.GPIO_PinNumber = GPIO_PIN_10;
 		PinCfg.GPIO_MODE = GPIO_MODE_OUTPUT_AF_PP;

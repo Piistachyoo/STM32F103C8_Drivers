@@ -88,6 +88,8 @@ void MCAL_RCC_Enable_Peripheral(uint8 peripheral){
 	case RCC_USART1:	RCC->APB2ENR |= (1<<14); break;
 	case RCC_USART2:	RCC->APB1ENR |= (1<<17); break;
 	case RCC_USART3:	RCC->APB1ENR |= (1<<18); break;
+	case RCC_SPI1:		RCC->APB2ENR |= (1<<12); break;
+	case RCC_SPI2:		RCC->APB1ENR |= (1<<14); break;
 	default: /* Do Nothing */ break;
 	}
 }
@@ -113,6 +115,8 @@ void MCAL_RCC_Reset_Peripheral(uint8 peripheral){
 	case RCC_USART1:	RCC->APB2RSTR |= (1<<14); break;
 	case RCC_USART2:	RCC->APB1RSTR |= (1<<17); break;
 	case RCC_USART3:	RCC->APB1RSTR |= (1<<18); break;
+	case RCC_SPI1:		RCC->APB2RSTR |= (1<<12); break;
+	case RCC_SPI2:		RCC->APB1RSTR |= (1<<14); break;
 	default: /* Do Nothing */ break;
 	}
 }

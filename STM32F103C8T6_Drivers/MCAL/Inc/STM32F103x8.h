@@ -67,6 +67,9 @@
 		/* USART */
 #define USART1_BASE	0x40013800UL
 
+		/* SPI */
+#define SPI1_BASE	0x40013000UL
+
 //----------------------------------------------
 // Section: Base addresses for APB1 Peripherals
 //----------------------------------------------
@@ -75,6 +78,8 @@
 #define USART2_BASE	0x40004400UL
 #define USART3_BASE	0x40004800UL
 
+		/* SPI */
+#define SPI2_BASE	0x40003800UL
 
 //======================================================//
 
@@ -179,6 +184,19 @@ typedef struct{
 	vuint32_t GTPR;
 }USART_TypeDef;
 
+		/* SPI */
+typedef struct{
+	vuint32_t CR1;
+	vuint32_t CR2;
+	vuint32_t SR;
+	vuint32_t DR;
+	vuint32_t CRCPR;
+	vuint32_t RXCRCR;
+	vuint32_t TXCRCR;
+	vuint32_t I2SCFGR;
+	vuint32_t I2SPR;
+}SPI_TypeDef;
+
 //======================================================//
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -206,6 +224,9 @@ typedef struct{
 #define USART1		((USART_TypeDef*)USART1_BASE)
 #define USART2		((USART_TypeDef*)USART2_BASE)
 #define USART3		((USART_TypeDef*)USART3_BASE)
+
+#define SPI1		((SPI_TypeDef*)SPI1_BASE)
+#define SPI2		((SPI_TypeDef*)SPI2_BASE)
 
 //======================================================//
 
