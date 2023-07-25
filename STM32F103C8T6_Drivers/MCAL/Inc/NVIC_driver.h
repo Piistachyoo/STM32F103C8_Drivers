@@ -83,6 +83,11 @@
 #define SPI1_IRQ	35
 #define SPI2_IRQ	36
 
+#define I2C1_EV_IRQ	31
+#define I2C1_ER_IRQ	32
+#define I2C2_EV_IRQ	33
+#define I2C2_ER_IRQ	34
+
 /*
  * =============================================
  * APIs Supported by "NVIC"

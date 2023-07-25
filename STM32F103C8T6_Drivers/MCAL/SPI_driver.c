@@ -15,7 +15,7 @@
 #define SPI_SR_TXE	((uint8)(0x02)) /* Transmit buffer empty */
 #define SPI_SR_RXNE	((uint8)(0x01)) /* Transmit buffer empty */
 
-SPI_config Global_SPI_Config[2];
+static SPI_config Global_SPI_Config[2];
 
 /**=============================================
  * @Fn			- MCAL_SPI_Init
