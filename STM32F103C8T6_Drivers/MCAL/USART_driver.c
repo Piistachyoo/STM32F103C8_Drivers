@@ -297,6 +297,33 @@ void MCAL_USART_SendData(USART_TypeDef* USARTx, uint16 *pTxBuffer, Polling_Mecha
 }
 
 /**=============================================
+  * @Fn				- MCAL_USART_SendString
+  * @brief 			- Send string on UART
+  * @param [in] 	- USARTx	: Pointer to the USART peripheral instance, where x can be (1..3 depending on device used)
+  * @param [in] 	- str		: Pointer to the string to be transmitted
+  * @param [in] 	- str_len	: Length of string to be transmitted (0 = send until you find null '\0')
+  * @retval 		- None
+  * Note			- Should initialize UART first
+  * 				Uses Polling Mechanism
+  */
+void MCAL_USART_SendString(USART_TypeDef* USARTx, uint8 *str, uint8 str_len){
+	// if str_len != 0 send with predefined length
+	if(str_len){
+		uint8 i;
+		for(i = 0; i < str_len; i++){
+			MCAL_USART_SendData(USARTx, (uint16*)(&(str[i])), enable);
+		}
+	}
+	else{
+		// if str_len = 0 send until we find null character '\0'
+		while(*str){
+			MCAL_USART_SendData(USARTx, (uint16*)str, enable);
+			str++;
+		}
+	}
+}
+
+/**=============================================
   * @Fn				- MCAL_USART_ReceiveData
   * @brief 			- Receive buffer from UART
   * @param [in] 	- USARTx	: Pointer to the USART peripheral instance, where x can be (1..3 depending on device used)
