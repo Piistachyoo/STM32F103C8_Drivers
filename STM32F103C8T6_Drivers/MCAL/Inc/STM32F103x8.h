@@ -85,6 +85,9 @@
 #define I2C1_BASE	0x40005400UL
 #define I2C2_BASE	0x40005800UL
 
+		/* DAC */
+#define DAC_BASE	0x40007400UL
+
 //======================================================//
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -214,6 +217,20 @@ typedef struct{
 	vuint32_t TRISE;
 }I2C_TypeDef;
 
+		/* DAC */
+typedef struct{
+	vuint32_t CR;
+	vuint32_t SWTRIGR;
+	vuint32_t DHR12R1;
+	vuint32_t DHR12L1;
+	vuint32_t DHR8R1;
+	vuint32_t DHR12R2;
+	vuint32_t DHR12L2;
+	vuint32_t DHR8R2;
+	vuint32_t DOR1;
+	vuint32_t DOR2;
+}DAC_TypeDef;
+
 //======================================================//
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -247,6 +264,8 @@ typedef struct{
 
 #define I2C1		((I2C_TypeDef*)I2C1_BASE)
 #define I2C2		((I2C_TypeDef*)I2C2_BASE)
+
+#define DAC			((DAC_TypeDef*)DAC_BASE)
 
 //======================================================//
 

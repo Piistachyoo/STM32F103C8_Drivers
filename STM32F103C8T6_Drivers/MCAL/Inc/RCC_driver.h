@@ -46,6 +46,7 @@
 #define RCC_SPI2		(uint8)0x0C
 #define RCC_I2C1		(uint8)0x0D
 #define RCC_I2C2		(uint8)0x0E
+#define RCC_DAC			(uint8)0x0F
 
 /*
  * =============================================
