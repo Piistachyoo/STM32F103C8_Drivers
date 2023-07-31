@@ -41,6 +41,7 @@
 
 	/* RCC: */
 #define RCC_BASE	0x40021000UL
+#define CRC_BASE	0x40023000UL
 
 //----------------------------------------------
 // Section: Base addresses for APB2 Peripherals
@@ -231,6 +232,13 @@ typedef struct{
 	vuint32_t DOR2;
 }DAC_TypeDef;
 
+		/* CRC */
+typedef struct{
+	vuint32_t DR;
+	vuint32_t IDR;
+	vuint32_t CR;
+}CRC_TypeDef;
+
 //======================================================//
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -266,6 +274,8 @@ typedef struct{
 #define I2C2		((I2C_TypeDef*)I2C2_BASE)
 
 #define DAC			((DAC_TypeDef*)DAC_BASE)
+
+#define CRC			((CRC_TypeDef*)CRC_BASE)
 
 //======================================================//
 

@@ -27,9 +27,9 @@ typedef struct{
 							// this parameter must be set based on @ref UART_BaudRate_define
 	uint8	Payload_Length; // Specifies the number of data bits transmitted or received in a frame
 							// this parameter must be set based on @ref UART_Payload_Length_define
-	uint8	Parity;			// Specifies the parity mode
+	uint32	Parity;			// Specifies the parity mode
 							// this parameter must be set based on @ref UART_Parity_define
-	uint8	StopBits;		// Specifies the number of stop bits transmitted
+	uint32	StopBits;		// Specifies the number of stop bits transmitted
 							// this parameter must be set based on @ref UART_StopBits_define
 	uint8	HwFlowCtl;		// Specifies whether the hardware flow control mode is enabled or disabled
 							// this parameter must be set based on @ref UART_HwFlowCtl_define
@@ -167,6 +167,18 @@ void MCAL_USART_SendString(USART_TypeDef* USARTx, uint8 *str, uint8 str_len);
   * 				When receiving with the parity enabled, the value read in the MSB bit is the received parity bit
   */
 void MCAL_USART_ReceiveData(USART_TypeDef* USARTx, uint16 *pRxBuffer, Polling_Mechanism PollingEn);
+
+/**=============================================
+  * @Fn				- MCAL_USART_ReceiveData
+  * @brief 			- Receive buffer from UART
+  * @param [in] 	- USARTx	: Pointer to the USART peripheral instance, where x can be (1..3 depending on device used)
+  * @param [in] 	- pRxBuffer	: Buffer to be received
+  * @param [in] 	- length	: Length of data to be received (0 = until receiving '\r')
+  * @retval 		- None
+  * Note			- Should initialize UART first
+  * 				Uses Polling Mechanism
+  */
+void MCAL_USART_ReceiveBuffer(USART_TypeDef* USARTx, uint16 *pRxBuffer, uint8 length);
 
 /**=============================================
   * @Fn				- MCAL_USART_Wait_TC

@@ -318,6 +318,7 @@ void MCAL_USART_SendString(USART_TypeDef* USARTx, uint8 *str, uint8 str_len){
 		// if str_len = 0 send until we find null character '\0'
 		while(*str){
 			MCAL_USART_SendData(USARTx, (uint16*)str, enable);
+			MCAL_USART_Wait_TC(USARTx);
 			str++;
 		}
 	}
@@ -411,9 +412,39 @@ void MCAL_USART_ReceiveData(USART_TypeDef* USARTx, uint16 *pRxBuffer, Polling_Me
 		}
 	}
 	else{ /* Do Nothing */ }
+}
 
-
-
+/**=============================================
+  * @Fn				- MCAL_USART_ReceiveData
+  * @brief 			- Receive buffer from UART
+  * @param [in] 	- USARTx	: Pointer to the USART peripheral instance, where x can be (1..3 depending on device used)
+  * @param [in] 	- pRxBuffer	: Buffer to be received
+  * @param [in] 	- length	: Length of data to be received (0 = until receiving '\r')
+  * @retval 		- None
+  * Note			- Should initialize UART first
+  * 				Uses Polling Mechanism
+  */
+void MCAL_USART_ReceiveBuffer(USART_TypeDef* USARTx, uint16 *pRxBuffer, uint8 length){
+	uint8 temp, i;
+	// if length != 0 receive with predefined length
+	if(length){
+		for(i = 0; i < length; i++){
+			MCAL_USART_ReceiveData(USARTx, (uint16*)(&(pRxBuffer[i])), enable);
+		}
+	}
+	else{
+		// if length = 0 send until we find return character '\r'
+		while(1){
+			MCAL_USART_ReceiveData(USARTx, (uint16*)(&temp), enable);
+			if('\r' == temp){
+				break;
+			}
+			else{
+				*pRxBuffer = temp;
+				(uint8*)pRxBuffer++;
+			}
+		}
+	}
 }
 
 /**=============================================
