@@ -41,8 +41,17 @@ typedef enum{
  * @param [in] 	- Buffer_Len: Length of 32-bit data in buffer
  * @param [in] 	- reset		: Choose to reset the data register or accumulate on a previous value
  * @retval 		- Calculated 32-bit CRC value
- * Note			- 
+ * Note			- None
  */
 uint32 MCAL_CRC_Calculate(uint32 *pBuffer, uint32 Buffer_Len, CRC_RESET_STATUS reset);
+
+/**=============================================
+ * @Fn			- MCAL_CRC_Reset
+ * @brief 		- Resets the CRC Data Register
+ * @param [in] 	- None
+ * @retval 		- None
+ * Note			- None
+ */
+void MCAL_CRC_Reset(void);
 
 #endif /* INC_CRC_DRIVER_H_ */

@@ -21,7 +21,7 @@
 uint32 MCAL_CRC_Calculate(uint32 *pBuffer, uint32 Buffer_Len, CRC_RESET_STATUS reset){
 	uint32 iterator, result;
 	if(CRC_RESET == reset){
-		CRC->CR = CRC_RESET_VALUE;
+		MCAL_CRC_Reset();
 	}
 	else{ /* Do Nothing */ }
 
@@ -34,4 +34,15 @@ uint32 MCAL_CRC_Calculate(uint32 *pBuffer, uint32 Buffer_Len, CRC_RESET_STATUS r
 	result = CRC->DR;
 
 	return result;
+}
+
+/**=============================================
+ * @Fn			- MCAL_CRC_Reset
+ * @brief 		- Resets the CRC Data Register
+ * @param [in] 	- None
+ * @retval 		- None
+ * Note			- None
+ */
+void MCAL_CRC_Reset(void){
+	CRC->CR = CRC_RESET_VALUE;
 }
