@@ -16,13 +16,39 @@
 #include "systick_driver.h"
 
 //----------------------------------------------
+// Section: User type definitions
+//----------------------------------------------
+typedef enum{
+	LCD_8BIT,
+	LCD_4BIT
+}LCD_MODE_t;
+
+typedef enum{
+	LCD_2ROWS,
+	LCD_4ROWS
+}LCD_ROWS_t;
+
+typedef struct{
+	LCD_MODE_t		Mode;
+	LCD_ROWS_t		Rows;
+	uint8			Display_Mode; // @ref LCD_COMMANDS_define
+	uint8			Entry_Mode;   // @ref LCD_COMMANDS_define
+	GPIO_TypeDef*	GPIO_PORT;
+	uint16 			RS_PIN; // @ref GPIO_PINS_define
+	uint16 			EN_PIN; // @ref GPIO_PINS_define
+	uint16 			D0_PIN; // @ref GPIO_PINS_define
+	uint16 			D1_PIN; // @ref GPIO_PINS_define
+	uint16 			D2_PIN; // @ref GPIO_PINS_define
+	uint16 			D3_PIN; // @ref GPIO_PINS_define
+	uint16 			D4_PIN; // @ref GPIO_PINS_define
+	uint16 			D5_PIN; // @ref GPIO_PINS_define
+	uint16 			D6_PIN; // @ref GPIO_PINS_define
+	uint16 			D7_PIN; // @ref GPIO_PINS_define
+}LCD_t;
+
+//----------------------------------------------
 // Section: Macros Configuration References
 //----------------------------------------------
-
-// @ref LCD_DATA_MODE_define
-
-#define LCD_8BIT_MODE								8
-#define LCD_4BIT_MODE								4
 
 // @ref LCD_COMMANDS_define
 
@@ -48,32 +74,8 @@
 
 #define LCD_FIRST_ROW								(0x80)
 #define LCD_SECOND_ROW								(0xC0)
-
-//----------------------------------------------
-// Section: User Configurations
-//----------------------------------------------
-
-#define LCD_MODE 			LCD_4BIT_MODE // @ref LCD_DATA_MODE_define
-
-
-// @ref LCD_CONFIG_define
-#define LCD_PORT			GPIOA
-#define RS_PIN				GPIO_PIN_8  // @ref GPIO_PINS_define
-#define RW_PIN				GPIO_PIN_9  // @ref GPIO_PINS_define
-#define EN_PIN				GPIO_PIN_10 // @ref GPIO_PINS_define
-#if LCD_MODE == LCD_8BIT_MODE
-#define D0_PIN				GPIO_PIN_0  // @ref GPIO_PINS_define
-#define D1_PIN				GPIO_PIN_1  // @ref GPIO_PINS_define
-#define D2_PIN				GPIO_PIN_2  // @ref GPIO_PINS_define
-#define D3_PIN				GPIO_PIN_3  // @ref GPIO_PINS_define
-#endif
-#define D4_PIN				GPIO_PIN_4  // @ref GPIO_PINS_define
-#define D5_PIN				GPIO_PIN_5  // @ref GPIO_PINS_define
-#define D6_PIN				GPIO_PIN_6  // @ref GPIO_PINS_define
-#define D7_PIN				GPIO_PIN_7  // @ref GPIO_PINS_define
-
-#define DISPLAY_MODE		LCD_DISPLAY_ON_UNDERLINE_OFF_CURSOR_OFF
-#define ENTRY_MODE			LCD_ENTRY_MODE_INC_SHIFT_OFF
+#define LCD_THIRD_ROW								(0x94)
+#define LCD_FOURTH_ROW								(0xD4)
 
 
 /*
@@ -85,87 +87,85 @@
 /**=============================================
   * @Fn				- LCD_Init
   * @brief 			- Initialized LCD based on user defined configurations
-  * @param [in] 	- None
-  * @param [out] 	- None
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @retval 		- None
   * Note			- User must set configurations @ref LCD_CONFIG_define
   */
-void LCD_Init();
+void LCD_Init(LCD_t* LCD_cfg);
 
 /**=============================================
   * @Fn				- LCD_Send_Command
   * @brief 			- Sends a command to the LCD to be executed
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @param [in] 	- command: command to be executed @ref LCD_COMMANDS_define
-  * @param [out] 	- None
   * @retval 		- None
   * Note			- None
   */
-void LCD_Send_Command(uint8 command);
+void LCD_Send_Command(LCD_t* LCD_cfg, uint8 command);
 
 /**=============================================
   * @Fn				- LCD_Send_Char
   * @brief 			- Sends a char to the LCD to be displayed
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @param [in] 	- Char: ASCII character to be displayed on screen
-  * @param [out] 	- None
   * @retval 		- None
   * Note			- None
   */
-void LCD_Send_Char(uint8 Char);
+void LCD_Send_Char(LCD_t* LCD_cfg, uint8 Char);
 
 /**=============================================
   * @Fn				- LCD_Send_Char_Pos
   * @brief 			- Sends a char to the LCD to be displayed at a specific location
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @param [in] 	- Char: ASCII character to be displayed on screen
   * @param [in] 	- row: Selects the row number of the displayed character @ref LCD_ROWS_POS_define
   * @param [in] 	- column: Selects the column number of the displayed character (1...16)
-  * @param [out] 	- None
   * @retval 		- None
   * Note			- None
   */
-void LCD_Send_Char_Pos(uint8 Char, uint8 row, uint8 column);
+void LCD_Send_Char_Pos(LCD_t* LCD_cfg, uint8 Char, uint8 row, uint8 column);
 
 /**=============================================
   * @Fn				- LCD_Send_String
   * @brief 			- Sends a string to the LCD to be displayed
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @param [in] 	- string: pointer to a string of characters to be displayed on LCD
-  * @param [out] 	- None
   * @retval 		- None
   * Note			- None
   */
-void LCD_Send_String(uint8 *string);
+void LCD_Send_String(LCD_t* LCD_cfg, uint8 *string);
 
 /**=============================================
   * @Fn				- LCD_Send_string_Pos
   * @brief 			- Sends a string to the LCD to be displayed at a specific location
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @param [in] 	- string: pointer to a string of characters to be displayed on LCD
   * @param [in] 	- row: Selects the row number of the displayed character @ref LCD_ROWS_POS_define
   * @param [in] 	- column: Selects the column number of the displayed character (1...16)
-  * @param [out] 	- None
   * @retval 		- None
   * Note			- None
   */
-void LCD_Send_string_Pos(uint8 *string, uint8 row, uint8 column);
+void LCD_Send_string_Pos(LCD_t* LCD_cfg, uint8 *string, uint8 row, uint8 column);
 
 /**=============================================
   * @Fn				- LCD_Send_Enable_Signal
   * @brief 			- Sends enable signal to the LCD
-  * @param [in] 	- None
-  * @param [out] 	- None
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @retval 		- None
   * Note			- None
   */
-void LCD_Send_Enable_Signal();
+void LCD_Send_Enable_Signal(LCD_t* LCD_cfg);
 
 /**=============================================
   * @Fn				- LCD_Set_Cursor
   * @brief 			- Sets the location of the cursor
+  * @param [in] 	- LCD_cfg: Pointer to the structure containing LCD configuration
   * @param [in] 	- row: Selects the row number of the displayed character @ref LCD_ROWS_POS_define
   * @param [in] 	- column: Selects the column number of the displayed character (1...16)
-  * @param [out] 	- None
   * @retval 		- None
   * Note			- None
   */
-void LCD_Set_Cursor(uint8 row, uint8 column);
+void LCD_Set_Cursor(LCD_t* LCD_cfg, uint8 row, uint8 column);
 
 
 #endif /* INCLCD_DRIVER_H_ */
