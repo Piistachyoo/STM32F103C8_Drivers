@@ -7,29 +7,36 @@
 /* GitHub        : https://github.com/Piistachyoo             		     */
 /*************************************************************************/
 
-#include "I2C_EEPROM.h"
+#include "USART_driver.h"
+#include "bootloader.h"
+#include "systick_driver.h"
+#include "lcd_driver.h"
+
+void UART_init(void);
+
 
 int main(){
 
-	uint8 buffer1[] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7};
-	uint8 buffer2[7] = {0};
+	LCD_t myLCD = {.Mode = LCD_4BIT, .GPIO_PORT = GPIOA, .Rows = LCD_2ROWS, .Display_Mode = LCD_DISPLAY_ON_UNDERLINE_OFF_CURSOR_ON,
+			.Entry_Mode = LCD_ENTRY_MODE_INC_SHIFT_OFF, .D4_PIN = GPIO_PIN_0, .D5_PIN = GPIO_PIN_1, .D6_PIN = GPIO_PIN_2, .D7_PIN = GPIO_PIN_3
+	};
+	LCD_Init(&myLCD);
+	LCD_Send_String(&myLCD, "TEST!");
+	while(1){
 
-	EEPROM_Init();
-	EEPROM_Write_nBytes(0xAF, buffer1, 7);
-	EEPROM_Read_nBytes(0xAF, buffer2, 7);
-
-	buffer1[0] = 0xA;
-	buffer1[1] = 0xB;
-	buffer1[2] = 0xC;
-	buffer1[3] = 0xD;
-
-	EEPROM_Write_nBytes(0xFFF, buffer1, 4);
-	EEPROM_Read_nBytes(0xFFF, buffer2, 4);
-
-	while(1);
+	}
 	return 0;
 }
 
-void clock_init(void){
-
+void UART_init(void){
+	USART_cfg_t myUART;
+	myUART.BaudRate = UART_BaudRate_115200;
+	myUART.HwFlowCtl = UART_HwFlowCtl_NONE;
+	myUART.IRQ_Enable = UART_IRQ_Enable_NONE;
+	myUART.P_IRQ_CallBack = NULL;
+	myUART.Parity = UART_Parity_NONE;
+	myUART.Payload_Length = UART_Payload_Length_8B;
+	myUART.StopBits = UART_StopBits_1;
+	myUART.USART_Mode = UART_Mode_TX_RX;
+	MCAL_USART_Init(USART1, &myUART);
 }
